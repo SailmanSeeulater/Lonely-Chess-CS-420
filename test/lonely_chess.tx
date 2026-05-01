@@ -1,0 +1,128 @@
+/*
+ * Lonely Chess - TextX Grammar (v3)
+ *
+ * Fix: PawnMove split into PawnCapture (exd5) and PawnPush (h4, a6)
+ * so the file letter is never ambiguous between from_file and to_file.
+ */
+
+PGNGame:
+    headers+=Header
+    moves+=MoveEntry
+    result=Result
+;
+
+Header:
+    '[' key=ID value=QuotedString ']'
+;
+
+MoveEntry:
+    number=INT '.'
+    white=HalfMove
+    (black=HalfMove)?
+;
+
+HalfMove:
+      CastleMove
+    | RegularMove
+;
+
+CastleMove:
+    castle=CastleType check?=CheckSuffix
+;
+
+CastleType:
+    'O-O-O' | 'O-O'
+;
+
+/*
+ * Ordered alternatives — TextX picks the FIRST full match:
+ *
+ *  1. PieceDisambigBoth  — Qd1h5
+ *  2. PieceDisambigFile  — Nbd2
+ *  3. PieceOnly          — Ra6, Nc3, Qxh5
+ *  4. PawnCapture        — exd5, exd8=Q
+ *  5. PawnPush           — h4, a6, e8=Q
+ */
+RegularMove:
+      PieceDisambigBoth
+    | PieceDisambigFile
+    | PieceOnly
+    | PawnCapture
+    | PawnPush
+;
+
+PieceDisambigBoth:
+    piece=PieceLetter
+    from_file=FILE_LETTER
+    from_rank=RANK_DIGIT
+    capture?='x'
+    to_file=FILE_LETTER
+    to_rank=RANK_DIGIT
+    promotion?=PromotionSuffix
+    check?=CheckSuffix
+;
+
+PieceDisambigFile:
+    piece=PieceLetter
+    from_file=FILE_LETTER
+    capture?='x'
+    to_file=FILE_LETTER
+    to_rank=RANK_DIGIT
+    promotion?=PromotionSuffix
+    check?=CheckSuffix
+;
+
+PieceOnly:
+    piece=PieceLetter
+    capture?='x'
+    to_file=FILE_LETTER
+    to_rank=RANK_DIGIT
+    promotion?=PromotionSuffix
+    check?=CheckSuffix
+;
+
+// Pawn capture: always has from_file + 'x' e.g. exd5
+PawnCapture:
+    from_file=FILE_LETTER
+    'x'
+    to_file=FILE_LETTER
+    to_rank=RANK_DIGIT
+    promotion?=PromotionSuffix
+    check?=CheckSuffix
+;
+
+// Pawn push: just destination e.g. h4, a6, e8=Q
+PawnPush:
+    to_file=FILE_LETTER
+    to_rank=RANK_DIGIT
+    promotion?=PromotionSuffix
+    check?=CheckSuffix
+;
+
+PromotionSuffix:
+    '=' piece=PieceLetter
+;
+
+CheckSuffix:
+    /[+#]/
+;
+
+PieceLetter:
+    /[KQRBN]/
+;
+
+FILE_LETTER:
+    /[a-h]/
+;
+
+RANK_DIGIT:
+    /[1-8]/
+;
+
+Result:
+    /1-0|0-1|1\/2-1\/2|\*/
+;
+
+QuotedString:
+    /\"[^\"]*\"/
+;
