@@ -13,4 +13,56 @@
 [EndTime "1:11:17 GMT+0000"]
 [Link "https://www.chess.com/game/live/167970268718"]
 
-1. Nc3 a6 2. Na4 b5 3. Nc3 a5 4. Na4 Ra6 5. h4 Rb6 6. Nc3 Rc6 7. Na4 Rf6 8. Nc3 Ra6 9. Nb1 Ra8 0-1
+{ === LONELY CHESS: int p_h2 = 100 then print(p_h2) === }
+
+{ --- SETUP PHASE --- }
+{ Move 1: W Knight b1->a3  signals: begin INTEGER instantiation mode }
+{ Move 1: B pawn a7->a5    filler move }
+1. Na3 a5
+
+{ Move 2: W pawn h2->h3    declares variable name p_h2 (based on pawn home square h2) }
+{ Move 2: B pawn a5->a4    filler move }
+2. h3 a4
+
+{ Move 3: W pawn h3->h4    second pawn push, no-op (var already declared) }
+{ Move 3: B rook a8->a6    arms encoding mode (rook reaches 6th rank) }
+3. h4 Ra6
+
+{ --- ENCODING PHASE: writing 1100100 = 100 in 7-bit binary --- }
+{ b6=bit6, c6=bit5, d6=bit4, e6=bit3, f6=bit2, g6=bit1, h6=bit0 }
+
+{ Move 4: W Knight a3->c4  no-op wait }
+{ Move 4: B rook a6->b6    sets bit6 -> acc = 1000000 }
+4. Nc4 Rb6
+
+{ Move 5: W Knight c4->a3  no-op wait }
+{ Move 5: B rook b6->c6    sets bit5 -> acc = 1100000 }
+5. Na3 Rc6
+
+{ Move 6: W Knight a3->c4  no-op wait }
+{ Move 6: B rook c6->f6    sets bit2 -> acc = 1100100 = 100 }
+6. Nc4 Rf6
+
+{ Move 7: W Knight c4->a3  no-op wait }
+{ Move 7: B rook f6->a6    finalises value: 1100100 = 100 }
+7. Na3 Ra6
+
+{ --- FINALISE PHASE --- }
+{ Move 8: W Knight a3->b1  commits p_h2 = 100 }
+{ Move 8: B rook a6->a8    encoding complete, resets to start position }
+8. Nb1 Ra8
+
+{ --- PRINT PHASE: print(p_h2) --- }
+{ Move 9:  W pawn h4->h5   selects p_h2 for printing (pawn home = h2) }
+{ Move 9:  B pawn e7->e6   filler }
+9. h5 e6
+
+{ Move 10: W Queen d1->d2  initiates print (path now clear after pawn moved) }
+{ Move 10: B pawn e6->e5   filler }
+10. Qd2 e5
+
+{ Move 11: W Queen d2->d1  finalises print -> OUTPUT: p_h2 = 100 }
+{ Move 11: B pawn e5->e4   filler }
+11. Qd1 e4
+
+0-1
