@@ -1,0 +1,98 @@
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2026.04.29"]
+[Round "?"]
+[White "Lessrtrer"]
+[Black "6nicor"]
+[Result "0-1"]
+[TimeControl "600"]
+[WhiteElo "507"]
+[BlackElo "998"]
+[Termination "6nicor won - game abandoned"]
+[ECO "A00"]
+[EndTime "1:11:17 GMT+0000"]
+[Link "https://www.chess.com/game/live/167970268718"]
+
+1. Nc3 a6  { SETUP: begin_string mode }
+2. h3 a5  { declare var: p_h2 }
+3. h4 Ra6  { setup no-op | enter_string_encoding_mode }
+4. Ne4 Rb6  { CHAR 'H' ASCII=72 bits=1001000 }
+5. Nc3 Re6
+6. Ne4 Ra6  { finalise 'H' }
+7. Nc3 Ra8  { reset between chars }
+8. Ne4 Ra6
+9. Nc3 Rb6  { CHAR 'e' ASCII=101 bits=1100101 }
+10. Ne4 Rc6
+11. Nc3 Rf6
+12. Ne4 Rh6
+13. Nc3 Ra6  { finalise 'e' }
+14. Ne4 Ra8  { reset between chars }
+15. Nc3 Ra6
+16. Ne4 Rb6  { CHAR 'l' ASCII=108 bits=1101100 }
+17. Nc3 Rc6
+18. Ne4 Re6
+19. Nc3 Rf6
+20. Ne4 Ra6  { finalise 'l' }
+21. Nc3 Ra8  { reset between chars }
+22. Ne4 Ra6
+23. Nc3 Rb6  { CHAR 'l' ASCII=108 bits=1101100 }
+24. Ne4 Rc6
+25. Nc3 Re6
+26. Ne4 Rf6
+27. Nc3 Ra6  { finalise 'l' }
+28. Ne4 Ra8  { reset between chars }
+29. Nc3 Ra6
+30. Ne4 Rb6  { CHAR 'o' ASCII=111 bits=1101111 }
+31. Nc3 Rc6
+32. Ne4 Re6
+33. Nc3 Rf6
+34. Ne4 Rg6
+35. Nc3 Rh6
+36. Ne4 Ra6  { finalise 'o' }
+37. Nc3 Ra8  { reset between chars }
+38. Ne4 Ra6
+39. Nc3 Rc6  { CHAR ' ' ASCII=32 bits=0100000 }
+40. Ne4 Ra6  { finalise ' ' }
+41. Nc3 Ra8  { reset between chars }
+42. Ne4 Ra6
+43. Nc3 Rb6  { CHAR 'W' ASCII=87 bits=1010111 }
+44. Ne4 Rd6
+45. Nc3 Rf6
+46. Ne4 Rg6
+47. Nc3 Rh6
+48. Ne4 Ra6  { finalise 'W' }
+49. Nc3 Ra8  { reset between chars }
+50. Ne4 Ra6
+51. Nc3 Rb6  { CHAR 'o' ASCII=111 bits=1101111 }
+52. Ne4 Rc6
+53. Nc3 Re6
+54. Ne4 Rf6
+55. Nc3 Rg6
+56. Ne4 Rh6
+57. Nc3 Ra6  { finalise 'o' }
+58. Ne4 Ra8  { reset between chars }
+59. Nc3 Ra6
+60. Ne4 Rb6  { CHAR 'r' ASCII=114 bits=1110010 }
+61. Nc3 Rc6
+62. Ne4 Rd6
+63. Nc3 Rg6
+64. Ne4 Ra6  { finalise 'r' }
+65. Nc3 Ra8  { reset between chars }
+66. Ne4 Ra6
+67. Nc3 Rb6  { CHAR 'l' ASCII=108 bits=1101100 }
+68. Ne4 Rc6
+69. Nc3 Re6
+70. Ne4 Rf6
+71. Nc3 Ra6  { finalise 'l' }
+72. Ne4 Ra8  { reset between chars }
+73. Nc3 Ra6
+74. Ne4 Rb6  { CHAR 'd' ASCII=100 bits=1100100 }
+75. Nc3 Rc6
+76. Ne4 Rf6
+77. Nc3 Ra6  { finalise 'd' }
+78. Nb1 Ra8  { commit p_h2 = "Hello World" | encoding_complete }
+79. h5 a4  { PRINT: select p_h2 (pawn push clears Queen path) }
+80. Qd2 b6  { initiate_print }
+81. Qd1 b5  { finalise_print -> OUTPUT p_h2 }
+
+0-1
