@@ -1,0 +1,472 @@
+[Event "FizzBuzz"]
+[Site "Chess.com"]
+[Date "2026.04.29"]
+[Round "?"]
+[White "Lonely Chess"]
+[Black "FizzBuzz"]
+[Result "1-0"]
+
+{ === LONELY CHESS: FizzBuzz range(1,16) === }
+
+1. Nc3 a6  { begin_string: p_g2 = "Fizz" }
+2. g3 a5  { declare var p_g2 }
+3. g4 Ra6  { setup no-op | enter_string_encoding_mode }
+4. Nc3 Rb6  { CHAR 'F' ASCII=70 bits=1000110 }
+5. Ne4 Rf6
+6. Nc3 Rg6
+7. Ne4 Ra6  { finalise 'F' }
+8. Nc3 Ra8  { reset between chars }
+9. Ne4 Ra6
+10. Nc3 Rb6  { CHAR 'i' ASCII=105 bits=1101001 }
+11. Ne4 Rc6
+12. Nc3 Re6
+13. Ne4 Rh6
+14. Nc3 Ra6  { finalise 'i' }
+15. Ne4 Ra8  { reset between chars }
+16. Nc3 Ra6
+17. Ne4 Rb6  { CHAR 'z' ASCII=122 bits=1111010 }
+18. Nc3 Rc6
+19. Ne4 Rd6
+20. Nc3 Re6
+21. Ne4 Rg6
+22. Nc3 Ra6  { finalise 'z' }
+23. Ne4 Ra8  { reset between chars }
+24. Nc3 Ra6
+25. Ne4 Rb6  { CHAR 'z' ASCII=122 bits=1111010 }
+26. Nc3 Rc6
+27. Ne4 Rd6
+28. Nc3 Re6
+29. Ne4 Rg6
+30. Nc3 Ra6  { finalise 'z' }
+31. Nb1 Ra8  { commit p_g2 = "Fizz" | encoding_complete }
+32. Nc3 a4  { begin_string: p_f2 = "Buzz" }
+33. f3 b6  { declare var p_f2 }
+34. f4 Ra6  { setup no-op | enter_string_encoding_mode }
+35. Nc3 Rb6  { CHAR 'B' ASCII=66 bits=1000010 }
+36. Ne4 Rg6
+37. Nc3 Ra6  { finalise 'B' }
+38. Ne4 Ra8  { reset between chars }
+39. Nc3 Ra6
+40. Ne4 Rb6  { CHAR 'u' ASCII=117 bits=1110101 }
+41. Nc3 Rc6
+42. Ne4 Rd6
+43. Nc3 Rf6
+44. Ne4 Rh6
+45. Nc3 Ra6  { finalise 'u' }
+46. Ne4 Ra8  { reset between chars }
+47. Nc3 Ra6
+48. Ne4 Rb6  { CHAR 'z' ASCII=122 bits=1111010 }
+49. Nc3 Rc6
+50. Ne4 Rd6
+51. Nc3 Re6
+52. Ne4 Rg6
+53. Nc3 Ra6  { finalise 'z' }
+54. Ne4 Ra8  { reset between chars }
+55. Nc3 Ra6
+56. Ne4 Rb6  { CHAR 'z' ASCII=122 bits=1111010 }
+57. Nc3 Rc6
+58. Ne4 Rd6
+59. Nc3 Re6
+60. Ne4 Rg6
+61. Nc3 Ra6  { finalise 'z' }
+62. Nb1 Ra8  { commit p_f2 = "Buzz" | encoding_complete }
+63. Ke2 b5  { for loop start }
+64. Rh2 b4  { arm loop var i }
+65. c6 Ra6  { range encoding (15 = 0001111) }
+66. c5 Re6  { range bit[3] }
+67. c4 Rf6  { range bit[2] }
+68. d6 Rg6  { range bit[1] }
+69. d5 Rh6  { range bit[0] }
+70. d4 Ra6  { range end=15 }
+71. Rh1 e6  { loop armed range(1,15) }
+72. Bh3 e5  { if block 1  i=1 }
+73. Rh3 e4  { push i }
+74. Ra3 a4  { % open }
+75. a4 Ra2
+76. a4 Ra3
+77. a4 Ra2
+78. a4 Ra3
+79. a4 Ra2
+80. Ra1 a4  { eval i%3  no match }
+81. Bf1 a4  { close if 1 }
+82. Bh3 a4  { if block 2 }
+83. Rh3 a4  { push i }
+84. Ra3 a4  { % open }
+85. a4 Ra2
+86. a4 Ra3
+87. a4 Ra2
+88. a4 Ra3
+89. a4 Ra2
+90. a4 Ra3
+91. a4 Ra2
+92. a4 Ra3
+93. a4 Ra2
+94. Ra1 a4  { eval i%5  no match }
+95. Bf1 a4  { close if 2 }
+96. Ke1 a4  { end iteration → print 1 }
+97. Ke2 a4  { next iteration i=2 }
+98. Bh3 a4  { if block 1  i=2 }
+99. Rh3 a4  { push i }
+100. Ra3 a4  { % open }
+101. a4 Ra2
+102. a4 Ra3
+103. a4 Ra2
+104. a4 Ra3
+105. a4 Ra2
+106. Ra1 a4  { eval i%3  no match }
+107. Bf1 a4  { close if 1 }
+108. Bh3 a4  { if block 2 }
+109. Rh3 a4  { push i }
+110. Ra3 a4  { % open }
+111. a4 Ra2
+112. a4 Ra3
+113. a4 Ra2
+114. a4 Ra3
+115. a4 Ra2
+116. a4 Ra3
+117. a4 Ra2
+118. a4 Ra3
+119. a4 Ra2
+120. Ra1 a4  { eval i%5  no match }
+121. Bf1 a4  { close if 2 }
+122. Ke1 a4  { end iteration → print 2 }
+123. Ke2 a4  { next iteration i=3 }
+124. Bh3 a4  { if block 1  i=3 }
+125. Rh3 a4  { push i }
+126. Ra3 a4  { % open }
+127. a4 Ra2
+128. a4 Ra3
+129. a4 Ra2
+130. a4 Ra3
+131. a4 Ra2
+132. Ra1 a4  { eval i%3  → Fizz }
+133. Bf1 a4  { close if 1 }
+134. Bh3 a4  { if block 2 }
+135. Rh3 a4  { push i }
+136. Ra3 a4  { % open }
+137. a4 Ra2
+138. a4 Ra3
+139. a4 Ra2
+140. a4 Ra3
+141. a4 Ra2
+142. a4 Ra3
+143. a4 Ra2
+144. a4 Ra3
+145. a4 Ra2
+146. Ra1 a4  { eval i%5  no match }
+147. Bf1 a4  { close if 2 }
+148. Ke1 a4  { end iteration → print Fizz }
+149. Ke2 a4  { next iteration i=4 }
+150. Bh3 a4  { if block 1  i=4 }
+151. Rh3 a4  { push i }
+152. Ra3 a4  { % open }
+153. a4 Ra2
+154. a4 Ra3
+155. a4 Ra2
+156. a4 Ra3
+157. a4 Ra2
+158. Ra1 a4  { eval i%3  no match }
+159. Bf1 a4  { close if 1 }
+160. Bh3 a4  { if block 2 }
+161. Rh3 a4  { push i }
+162. Ra3 a4  { % open }
+163. a4 Ra2
+164. a4 Ra3
+165. a4 Ra2
+166. a4 Ra3
+167. a4 Ra2
+168. a4 Ra3
+169. a4 Ra2
+170. a4 Ra3
+171. a4 Ra2
+172. Ra1 a4  { eval i%5  no match }
+173. Bf1 a4  { close if 2 }
+174. Ke1 a4  { end iteration → print 4 }
+175. Ke2 a4  { next iteration i=5 }
+176. Bh3 a4  { if block 1  i=5 }
+177. Rh3 a4  { push i }
+178. Ra3 a4  { % open }
+179. a4 Ra2
+180. a4 Ra3
+181. a4 Ra2
+182. a4 Ra3
+183. a4 Ra2
+184. Ra1 a4  { eval i%3  no match }
+185. Bf1 a4  { close if 1 }
+186. Bh3 a4  { if block 2 }
+187. Rh3 a4  { push i }
+188. Ra3 a4  { % open }
+189. a4 Ra2
+190. a4 Ra3
+191. a4 Ra2
+192. a4 Ra3
+193. a4 Ra2
+194. a4 Ra3
+195. a4 Ra2
+196. a4 Ra3
+197. a4 Ra2
+198. Ra1 a4  { eval i%5  → Buzz }
+199. Bf1 a4  { close if 2 }
+200. Ke1 a4  { end iteration → print Buzz }
+201. Ke2 a4  { next iteration i=6 }
+202. Bh3 a4  { if block 1  i=6 }
+203. Rh3 a4  { push i }
+204. Ra3 a4  { % open }
+205. a4 Ra2
+206. a4 Ra3
+207. a4 Ra2
+208. a4 Ra3
+209. a4 Ra2
+210. Ra1 a4  { eval i%3  → Fizz }
+211. Bf1 a4  { close if 1 }
+212. Bh3 a4  { if block 2 }
+213. Rh3 a4  { push i }
+214. Ra3 a4  { % open }
+215. a4 Ra2
+216. a4 Ra3
+217. a4 Ra2
+218. a4 Ra3
+219. a4 Ra2
+220. a4 Ra3
+221. a4 Ra2
+222. a4 Ra3
+223. a4 Ra2
+224. Ra1 a4  { eval i%5  no match }
+225. Bf1 a4  { close if 2 }
+226. Ke1 a4  { end iteration → print Fizz }
+227. Ke2 a4  { next iteration i=7 }
+228. Bh3 a4  { if block 1  i=7 }
+229. Rh3 a4  { push i }
+230. Ra3 a4  { % open }
+231. a4 Ra2
+232. a4 Ra3
+233. a4 Ra2
+234. a4 Ra3
+235. a4 Ra2
+236. Ra1 a4  { eval i%3  no match }
+237. Bf1 a4  { close if 1 }
+238. Bh3 a4  { if block 2 }
+239. Rh3 a4  { push i }
+240. Ra3 a4  { % open }
+241. a4 Ra2
+242. a4 Ra3
+243. a4 Ra2
+244. a4 Ra3
+245. a4 Ra2
+246. a4 Ra3
+247. a4 Ra2
+248. a4 Ra3
+249. a4 Ra2
+250. Ra1 a4  { eval i%5  no match }
+251. Bf1 a4  { close if 2 }
+252. Ke1 a4  { end iteration → print 7 }
+253. Ke2 a4  { next iteration i=8 }
+254. Bh3 a4  { if block 1  i=8 }
+255. Rh3 a4  { push i }
+256. Ra3 a4  { % open }
+257. a4 Ra2
+258. a4 Ra3
+259. a4 Ra2
+260. a4 Ra3
+261. a4 Ra2
+262. Ra1 a4  { eval i%3  no match }
+263. Bf1 a4  { close if 1 }
+264. Bh3 a4  { if block 2 }
+265. Rh3 a4  { push i }
+266. Ra3 a4  { % open }
+267. a4 Ra2
+268. a4 Ra3
+269. a4 Ra2
+270. a4 Ra3
+271. a4 Ra2
+272. a4 Ra3
+273. a4 Ra2
+274. a4 Ra3
+275. a4 Ra2
+276. Ra1 a4  { eval i%5  no match }
+277. Bf1 a4  { close if 2 }
+278. Ke1 a4  { end iteration → print 8 }
+279. Ke2 a4  { next iteration i=9 }
+280. Bh3 a4  { if block 1  i=9 }
+281. Rh3 a4  { push i }
+282. Ra3 a4  { % open }
+283. a4 Ra2
+284. a4 Ra3
+285. a4 Ra2
+286. a4 Ra3
+287. a4 Ra2
+288. Ra1 a4  { eval i%3  → Fizz }
+289. Bf1 a4  { close if 1 }
+290. Bh3 a4  { if block 2 }
+291. Rh3 a4  { push i }
+292. Ra3 a4  { % open }
+293. a4 Ra2
+294. a4 Ra3
+295. a4 Ra2
+296. a4 Ra3
+297. a4 Ra2
+298. a4 Ra3
+299. a4 Ra2
+300. a4 Ra3
+301. a4 Ra2
+302. Ra1 a4  { eval i%5  no match }
+303. Bf1 a4  { close if 2 }
+304. Ke1 a4  { end iteration → print Fizz }
+305. Ke2 a4  { next iteration i=10 }
+306. Bh3 a4  { if block 1  i=10 }
+307. Rh3 a4  { push i }
+308. Ra3 a4  { % open }
+309. a4 Ra2
+310. a4 Ra3
+311. a4 Ra2
+312. a4 Ra3
+313. a4 Ra2
+314. Ra1 a4  { eval i%3  no match }
+315. Bf1 a4  { close if 1 }
+316. Bh3 a4  { if block 2 }
+317. Rh3 a4  { push i }
+318. Ra3 a4  { % open }
+319. a4 Ra2
+320. a4 Ra3
+321. a4 Ra2
+322. a4 Ra3
+323. a4 Ra2
+324. a4 Ra3
+325. a4 Ra2
+326. a4 Ra3
+327. a4 Ra2
+328. Ra1 a4  { eval i%5  → Buzz }
+329. Bf1 a4  { close if 2 }
+330. Ke1 a4  { end iteration → print Buzz }
+331. Ke2 a4  { next iteration i=11 }
+332. Bh3 a4  { if block 1  i=11 }
+333. Rh3 a4  { push i }
+334. Ra3 a4  { % open }
+335. a4 Ra2
+336. a4 Ra3
+337. a4 Ra2
+338. a4 Ra3
+339. a4 Ra2
+340. Ra1 a4  { eval i%3  no match }
+341. Bf1 a4  { close if 1 }
+342. Bh3 a4  { if block 2 }
+343. Rh3 a4  { push i }
+344. Ra3 a4  { % open }
+345. a4 Ra2
+346. a4 Ra3
+347. a4 Ra2
+348. a4 Ra3
+349. a4 Ra2
+350. a4 Ra3
+351. a4 Ra2
+352. a4 Ra3
+353. a4 Ra2
+354. Ra1 a4  { eval i%5  no match }
+355. Bf1 a4  { close if 2 }
+356. Ke1 a4  { end iteration → print 11 }
+357. Ke2 a4  { next iteration i=12 }
+358. Bh3 a4  { if block 1  i=12 }
+359. Rh3 a4  { push i }
+360. Ra3 a4  { % open }
+361. a4 Ra2
+362. a4 Ra3
+363. a4 Ra2
+364. a4 Ra3
+365. a4 Ra2
+366. Ra1 a4  { eval i%3  → Fizz }
+367. Bf1 a4  { close if 1 }
+368. Bh3 a4  { if block 2 }
+369. Rh3 a4  { push i }
+370. Ra3 a4  { % open }
+371. a4 Ra2
+372. a4 Ra3
+373. a4 Ra2
+374. a4 Ra3
+375. a4 Ra2
+376. a4 Ra3
+377. a4 Ra2
+378. a4 Ra3
+379. a4 Ra2
+380. Ra1 a4  { eval i%5  no match }
+381. Bf1 a4  { close if 2 }
+382. Ke1 a4  { end iteration → print Fizz }
+383. Ke2 a4  { next iteration i=13 }
+384. Bh3 a4  { if block 1  i=13 }
+385. Rh3 a4  { push i }
+386. Ra3 a4  { % open }
+387. a4 Ra2
+388. a4 Ra3
+389. a4 Ra2
+390. a4 Ra3
+391. a4 Ra2
+392. Ra1 a4  { eval i%3  no match }
+393. Bf1 a4  { close if 1 }
+394. Bh3 a4  { if block 2 }
+395. Rh3 a4  { push i }
+396. Ra3 a4  { % open }
+397. a4 Ra2
+398. a4 Ra3
+399. a4 Ra2
+400. a4 Ra3
+401. a4 Ra2
+402. a4 Ra3
+403. a4 Ra2
+404. a4 Ra3
+405. a4 Ra2
+406. Ra1 a4  { eval i%5  no match }
+407. Bf1 a4  { close if 2 }
+408. Ke1 a4  { end iteration → print 13 }
+409. Ke2 a4  { next iteration i=14 }
+410. Bh3 a4  { if block 1  i=14 }
+411. Rh3 a4  { push i }
+412. Ra3 a4  { % open }
+413. a4 Ra2
+414. a4 Ra3
+415. a4 Ra2
+416. a4 Ra3
+417. a4 Ra2
+418. Ra1 a4  { eval i%3  no match }
+419. Bf1 a4  { close if 1 }
+420. Bh3 a4  { if block 2 }
+421. Rh3 a4  { push i }
+422. Ra3 a4  { % open }
+423. a4 Ra2
+424. a4 Ra3
+425. a4 Ra2
+426. a4 Ra3
+427. a4 Ra2
+428. a4 Ra3
+429. a4 Ra2
+430. a4 Ra3
+431. a4 Ra2
+432. Ra1 a4  { eval i%5  no match }
+433. Bf1 a4  { close if 2 }
+434. Ke1 a4  { end iteration → print 14 }
+435. Ke2 a4  { next iteration i=15 }
+436. Bh3 a4  { if block 1  i=15 }
+437. Rh3 a4  { push i }
+438. Ra3 a4  { % open }
+439. a4 Ra2
+440. a4 Ra3
+441. a4 Ra2
+442. a4 Ra3
+443. a4 Ra2
+444. Ra1 a4  { eval i%3  → Fizz }
+445. Bf1 a4  { close if 1 }
+446. Bh3 a4  { if block 2 }
+447. Rh3 a4  { push i }
+448. Ra3 a4  { % open }
+449. a4 Ra2
+450. a4 Ra3
+451. a4 Ra2
+452. a4 Ra3
+453. a4 Ra2
+454. a4 Ra3
+455. a4 Ra2
+456. a4 Ra3
+457. a4 Ra2
+458. Ra1 a4  { eval i%5  → Buzz }
+459. Bf1 a4  { close if 2 }
+460. Ke1 a4  { end iteration → print FizzBuzz }
+
+1-0
