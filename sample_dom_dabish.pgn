@@ -1,0 +1,274 @@
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2026.04.29"]
+[Round "?"]
+[White "Lessrtrer"]
+[Black "6nicor"]
+[Result "0-1"]
+[TimeControl "600"]
+[WhiteElo "507"]
+[BlackElo "998"]
+[Termination "6nicor won - game abandoned"]
+[ECO "A00"]
+[EndTime "1:11:17 GMT+0000"]
+[Link "https://www.chess.com/game/live/167970268718"]
+
+{ === LONELY CHESS: print("I love to learn coding with Dom Dabish") === }
+
+1. Nc3 a6  { begin_string: p_d2 = "I love to learn coding with Dom Dabish" }
+2. d3 a5  { declare var p_d2 }
+3. d4 Ra6  { enter_string_encoding_mode }
+4. Nc3 Rb6  { CHAR 'I' ASCII=73 bits=1001001 }
+5. Ne4 Re6
+6. Nc3 Rh6
+7. Ne4 Ra6  { finalise 'I' }
+8. Nc3 Ra8  { reset }
+9. Ne4 Ra6
+10. Nc3 Rc6  { CHAR ' ' ASCII=32 bits=0100000 }
+11. Ne4 Ra6  { finalise ' ' }
+12. Nc3 Ra8  { reset }
+13. Ne4 Ra6
+14. Nc3 Rb6  { CHAR 'l' ASCII=108 bits=1101100 }
+15. Ne4 Rc6
+16. Nc3 Re6
+17. Ne4 Rf6
+18. Nc3 Ra6  { finalise 'l' }
+19. Ne4 Ra8  { reset }
+20. Nc3 Ra6
+21. Ne4 Rb6  { CHAR 'o' ASCII=111 bits=1101111 }
+22. Nc3 Rc6
+23. Ne4 Re6
+24. Nc3 Rf6
+25. Ne4 Rg6
+26. Nc3 Rh6
+27. Ne4 Ra6  { finalise 'o' }
+28. Nc3 Ra8  { reset }
+29. Ne4 Ra6
+30. Nc3 Rb6  { CHAR 'v' ASCII=118 bits=1110110 }
+31. Ne4 Rc6
+32. Nc3 Rd6
+33. Ne4 Rf6
+34. Nc3 Rg6
+35. Ne4 Ra6  { finalise 'v' }
+36. Nc3 Ra8  { reset }
+37. Ne4 Ra6
+38. Nc3 Rb6  { CHAR 'e' ASCII=101 bits=1100101 }
+39. Ne4 Rc6
+40. Nc3 Rf6
+41. Ne4 Rh6
+42. Nc3 Ra6  { finalise 'e' }
+43. Ne4 Ra8  { reset }
+44. Nc3 Ra6
+45. Ne4 Rc6  { CHAR ' ' ASCII=32 bits=0100000 }
+46. Nc3 Ra6  { finalise ' ' }
+47. Ne4 Ra8  { reset }
+48. Nc3 Ra6
+49. Ne4 Rb6  { CHAR 't' ASCII=116 bits=1110100 }
+50. Nc3 Rc6
+51. Ne4 Rd6
+52. Nc3 Rf6
+53. Ne4 Ra6  { finalise 't' }
+54. Nc3 Ra8  { reset }
+55. Ne4 Ra6
+56. Nc3 Rb6  { CHAR 'o' ASCII=111 bits=1101111 }
+57. Ne4 Rc6
+58. Nc3 Re6
+59. Ne4 Rf6
+60. Nc3 Rg6
+61. Ne4 Rh6
+62. Nc3 Ra6  { finalise 'o' }
+63. Ne4 Ra8  { reset }
+64. Nc3 Ra6
+65. Ne4 Rc6  { CHAR ' ' ASCII=32 bits=0100000 }
+66. Nc3 Ra6  { finalise ' ' }
+67. Ne4 Ra8  { reset }
+68. Nc3 Ra6
+69. Ne4 Rb6  { CHAR 'l' ASCII=108 bits=1101100 }
+70. Nc3 Rc6
+71. Ne4 Re6
+72. Nc3 Rf6
+73. Ne4 Ra6  { finalise 'l' }
+74. Nc3 Ra8  { reset }
+75. Ne4 Ra6
+76. Nc3 Rb6  { CHAR 'e' ASCII=101 bits=1100101 }
+77. Ne4 Rc6
+78. Nc3 Rf6
+79. Ne4 Rh6
+80. Nc3 Ra6  { finalise 'e' }
+81. Ne4 Ra8  { reset }
+82. Nc3 Ra6
+83. Ne4 Rb6  { CHAR 'a' ASCII=97 bits=1100001 }
+84. Nc3 Rc6
+85. Ne4 Rh6
+86. Nc3 Ra6  { finalise 'a' }
+87. Ne4 Ra8  { reset }
+88. Nc3 Ra6
+89. Ne4 Rb6  { CHAR 'r' ASCII=114 bits=1110010 }
+90. Nc3 Rc6
+91. Ne4 Rd6
+92. Nc3 Rg6
+93. Ne4 Ra6  { finalise 'r' }
+94. Nc3 Ra8  { reset }
+95. Ne4 Ra6
+96. Nc3 Rb6  { CHAR 'n' ASCII=110 bits=1101110 }
+97. Ne4 Rc6
+98. Nc3 Re6
+99. Ne4 Rf6
+100. Nc3 Rg6
+101. Ne4 Ra6  { finalise 'n' }
+102. Nc3 Ra8  { reset }
+103. Ne4 Ra6
+104. Nc3 Rc6  { CHAR ' ' ASCII=32 bits=0100000 }
+105. Ne4 Ra6  { finalise ' ' }
+106. Nc3 Ra8  { reset }
+107. Ne4 Ra6
+108. Nc3 Rb6  { CHAR 'c' ASCII=99 bits=1100011 }
+109. Ne4 Rc6
+110. Nc3 Rg6
+111. Ne4 Rh6
+112. Nc3 Ra6  { finalise 'c' }
+113. Ne4 Ra8  { reset }
+114. Nc3 Ra6
+115. Ne4 Rb6  { CHAR 'o' ASCII=111 bits=1101111 }
+116. Nc3 Rc6
+117. Ne4 Re6
+118. Nc3 Rf6
+119. Ne4 Rg6
+120. Nc3 Rh6
+121. Ne4 Ra6  { finalise 'o' }
+122. Nc3 Ra8  { reset }
+123. Ne4 Ra6
+124. Nc3 Rb6  { CHAR 'd' ASCII=100 bits=1100100 }
+125. Ne4 Rc6
+126. Nc3 Rf6
+127. Ne4 Ra6  { finalise 'd' }
+128. Nc3 Ra8  { reset }
+129. Ne4 Ra6
+130. Nc3 Rb6  { CHAR 'i' ASCII=105 bits=1101001 }
+131. Ne4 Rc6
+132. Nc3 Re6
+133. Ne4 Rh6
+134. Nc3 Ra6  { finalise 'i' }
+135. Ne4 Ra8  { reset }
+136. Nc3 Ra6
+137. Ne4 Rb6  { CHAR 'n' ASCII=110 bits=1101110 }
+138. Nc3 Rc6
+139. Ne4 Re6
+140. Nc3 Rf6
+141. Ne4 Rg6
+142. Nc3 Ra6  { finalise 'n' }
+143. Ne4 Ra8  { reset }
+144. Nc3 Ra6
+145. Ne4 Rb6  { CHAR 'g' ASCII=103 bits=1100111 }
+146. Nc3 Rc6
+147. Ne4 Rf6
+148. Nc3 Rg6
+149. Ne4 Rh6
+150. Nc3 Ra6  { finalise 'g' }
+151. Ne4 Ra8  { reset }
+152. Nc3 Ra6
+153. Ne4 Rc6  { CHAR ' ' ASCII=32 bits=0100000 }
+154. Nc3 Ra6  { finalise ' ' }
+155. Ne4 Ra8  { reset }
+156. Nc3 Ra6
+157. Ne4 Rb6  { CHAR 'w' ASCII=119 bits=1110111 }
+158. Nc3 Rc6
+159. Ne4 Rd6
+160. Nc3 Rf6
+161. Ne4 Rg6
+162. Nc3 Rh6
+163. Ne4 Ra6  { finalise 'w' }
+164. Nc3 Ra8  { reset }
+165. Ne4 Ra6
+166. Nc3 Rb6  { CHAR 'i' ASCII=105 bits=1101001 }
+167. Ne4 Rc6
+168. Nc3 Re6
+169. Ne4 Rh6
+170. Nc3 Ra6  { finalise 'i' }
+171. Ne4 Ra8  { reset }
+172. Nc3 Ra6
+173. Ne4 Rb6  { CHAR 't' ASCII=116 bits=1110100 }
+174. Nc3 Rc6
+175. Ne4 Rd6
+176. Nc3 Rf6
+177. Ne4 Ra6  { finalise 't' }
+178. Nc3 Ra8  { reset }
+179. Ne4 Ra6
+180. Nc3 Rb6  { CHAR 'h' ASCII=104 bits=1101000 }
+181. Ne4 Rc6
+182. Nc3 Re6
+183. Ne4 Ra6  { finalise 'h' }
+184. Nc3 Ra8  { reset }
+185. Ne4 Ra6
+186. Nc3 Rc6  { CHAR ' ' ASCII=32 bits=0100000 }
+187. Ne4 Ra6  { finalise ' ' }
+188. Nc3 Ra8  { reset }
+189. Ne4 Ra6
+190. Nc3 Rb6  { CHAR 'D' ASCII=68 bits=1000100 }
+191. Ne4 Rf6
+192. Nc3 Ra6  { finalise 'D' }
+193. Ne4 Ra8  { reset }
+194. Nc3 Ra6
+195. Ne4 Rb6  { CHAR 'o' ASCII=111 bits=1101111 }
+196. Nc3 Rc6
+197. Ne4 Re6
+198. Nc3 Rf6
+199. Ne4 Rg6
+200. Nc3 Rh6
+201. Ne4 Ra6  { finalise 'o' }
+202. Nc3 Ra8  { reset }
+203. Ne4 Ra6
+204. Nc3 Rb6  { CHAR 'm' ASCII=109 bits=1101101 }
+205. Ne4 Rc6
+206. Nc3 Re6
+207. Ne4 Rf6
+208. Nc3 Rh6
+209. Ne4 Ra6  { finalise 'm' }
+210. Nc3 Ra8  { reset }
+211. Ne4 Ra6
+212. Nc3 Rc6  { CHAR ' ' ASCII=32 bits=0100000 }
+213. Ne4 Ra6  { finalise ' ' }
+214. Nc3 Ra8  { reset }
+215. Ne4 Ra6
+216. Nc3 Rb6  { CHAR 'D' ASCII=68 bits=1000100 }
+217. Ne4 Rf6
+218. Nc3 Ra6  { finalise 'D' }
+219. Ne4 Ra8  { reset }
+220. Nc3 Ra6
+221. Ne4 Rb6  { CHAR 'a' ASCII=97 bits=1100001 }
+222. Nc3 Rc6
+223. Ne4 Rh6
+224. Nc3 Ra6  { finalise 'a' }
+225. Ne4 Ra8  { reset }
+226. Nc3 Ra6
+227. Ne4 Rb6  { CHAR 'b' ASCII=98 bits=1100010 }
+228. Nc3 Rc6
+229. Ne4 Rg6
+230. Nc3 Ra6  { finalise 'b' }
+231. Ne4 Ra8  { reset }
+232. Nc3 Ra6
+233. Ne4 Rb6  { CHAR 'i' ASCII=105 bits=1101001 }
+234. Nc3 Rc6
+235. Ne4 Re6
+236. Nc3 Rh6
+237. Ne4 Ra6  { finalise 'i' }
+238. Nc3 Ra8  { reset }
+239. Ne4 Ra6
+240. Nc3 Rb6  { CHAR 's' ASCII=115 bits=1110011 }
+241. Ne4 Rc6
+242. Nc3 Rd6
+243. Ne4 Rg6
+244. Nc3 Rh6
+245. Ne4 Ra6  { finalise 's' }
+246. Nc3 Ra8  { reset }
+247. Ne4 Ra6
+248. Nc3 Rb6  { CHAR 'h' ASCII=104 bits=1101000 }
+249. Ne4 Rc6
+250. Nc3 Re6
+251. Ne4 Ra6  { finalise 'h' }
+252. Nb1 Ra8  { commit p_d2 }
+253. d5 a4  { print select: p_d2 }
+254. Qd2 b6  { initiate_print }
+255. Qd1 b5  { finalise_print → OUTPUT }
+
+0-1

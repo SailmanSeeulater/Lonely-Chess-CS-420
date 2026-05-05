@@ -100,6 +100,13 @@ class BoardState:
         # Output buffer (accumulates Fizz/Buzz per iteration)
         self.output_buffer  = ""
 
+        # Arithmetic state
+        self.arith_op       = None   # '+' '-' '*' '/'
+        self.arith_op1_var  = None   # variable name of operand 1 (result stored here)
+        self.arith_op2_var  = None   # variable name of operand 2
+        self.arith_mode     = None   # None | 'OP1' | 'OP2' | 'RETURN'
+        self.arith_rook_pos = 'a1'   # tracks a-rook position during arithmetic
+
         # If block
         self.if_open        = False
         self.if_count       = 0   # how many if blocks opened this iteration
@@ -217,13 +224,12 @@ class LonelyChessInterpreter:
             b.if_count         = 0
             return
 
-        # W Rook h1→h2 : arm loop variable
-        if piece == 'R' and to_file == 'h' and to_rank == 2:
+        # W Rook h1→h2 : arm loop variable (only fires during loop setup/running)
+        if piece == 'R' and to_file == 'h' and to_rank == 2 and b.loop_active:
             if b.mode == 'FOR_RANGE':
                 b.loop_rook_pos  = 'h2'
                 self._annotation = "→ arm loop var i"
             elif b.loop_rook_pos == 'h3':
-                # h3→h2 = i++ step 2
                 b.loop_rook_pos  = 'h2'
                 self._annotation = f"→ i++ complete  i={b.loop_i}"
             return
@@ -272,21 +278,61 @@ class LonelyChessInterpreter:
             return
 
         # W Rook a3→a1 : close modulo, evaluate, append to buffer if matched
-        if piece == 'R' and to_file == 'a' and to_rank == 1:
-            if b.mod_open:
-                divisor        = b.mod_count
-                b.mod_open     = False
-                b.mod_rook_pos = 'a1'
-                matched        = (b.loop_i % divisor == 0) if divisor > 0 else False
-                if matched:
-                    # if_count 1 = first if block = % 3 = Fizz (p_g2)
-                    # if_count 2 = second if block = % 5 = Buzz (p_f2)
-                    var    = 'p_g2' if b.if_count == 1 else 'p_f2'
-                    word   = b.variables.get(var, f"<{var}>")
-                    b.output_buffer += word
-                    self._annotation = f"→ i%{divisor}==0 ✓  buffer+=\"{word}\"  buffer=\"{b.output_buffer}\""
-                else:
-                    self._annotation = f"→ i%{divisor}=={b.loop_i % divisor if divisor else '?'}  no match"
+        # Only intercept if modulo is actually open — otherwise fall through to arithmetic
+        if piece == 'R' and to_file == 'a' and to_rank == 1 and b.mod_open:
+            divisor        = b.mod_count
+            b.mod_open     = False
+            b.mod_rook_pos = 'a1'
+            matched        = (b.loop_i % divisor == 0) if divisor > 0 else False
+            if matched:
+                var    = 'p_g2' if b.if_count == 1 else 'p_f2'
+                word   = b.variables.get(var, f"<{var}>")
+                b.output_buffer += word
+                self._annotation = f"→ i%{divisor}==0 ✓  buffer+=\"{word}\"  buffer=\"{b.output_buffer}\""
+            else:
+                self._annotation = f"→ i%{divisor}=={b.loop_i % divisor if divisor else '?'}  no match"
+            return
+
+        # ── ARITHMETIC ───────────────────────────────────────────────────────────
+
+        # W Rook a1→rank2 : select op1
+        if piece == 'R' and to_rank == 2 and b.arith_mode == 'OP1' and b.arith_rook_pos == 'a1':
+            var_name         = f"p_{to_file}2"
+            b.arith_op1_var  = var_name
+            b.arith_mode     = 'OP2'
+            b.arith_rook_pos = f"{to_file}2"
+            self._annotation = f"→ arith op1: {var_name} = {b.variables.get(var_name, '?')}"
+            return
+
+        # W Rook rank2→rank2 : select op2
+        if piece == 'R' and to_rank == 2 and b.arith_mode == 'OP2':
+            var_name         = f"p_{to_file}2"
+            b.arith_op2_var  = var_name
+            b.arith_mode     = 'RETURN'
+            b.arith_rook_pos = f"{to_file}2"
+            self._annotation = f"→ arith op2: {var_name} = {b.variables.get(var_name, '?')}"
+            return
+
+        # W Rook rank2→a2 : begin return
+        if piece == 'R' and to_file == 'a' and to_rank == 2 and b.arith_mode == 'RETURN':
+            b.arith_rook_pos = 'a2'
+            self._annotation = "→ arith returning"
+            return
+
+        # W Rook a2→a1 : EXECUTE
+        if piece == 'R' and to_file == 'a' and to_rank == 1 and b.arith_mode == 'RETURN':
+            v1  = b.variables.get(b.arith_op1_var, 0)
+            v2  = b.variables.get(b.arith_op2_var, 0)
+            op  = b.arith_op
+            if   op == '+': result = v1 + v2
+            elif op == '-': result = v1 - v2
+            elif op == '*': result = v1 * v2
+            elif op == '/': result = int(v1 / v2) if v2 != 0 else 0
+            b.variables[b.arith_op1_var] = result
+            self._annotation = f"→ EXECUTE: {b.arith_op1_var} = {v1} {op} {v2} = {result}"
+            b.arith_op = None; b.arith_mode = None
+            b.arith_op1_var = None; b.arith_op2_var = None
+            b.arith_rook_pos = 'a1'
             return
 
         # ── VARIABLE DECLARATION (existing) ──────────────────────────────────
@@ -394,6 +440,21 @@ class LonelyChessInterpreter:
         # Setup fillers
         if piece == 'P' and b.mode in ('INT_SETUP', 'STR_SETUP'):
             self._annotation = "→ clear path (no-op)"
+            return
+
+        # Arithmetic operator signals (Black pawn rank 7→5)
+        # Ignore if arithmetic is already in progress (mid-sequence)
+        op_map = {'h': '+', 'g': '-', 'f': '*', 'e': '/'}
+        if piece == 'P' and to_rank == 5 and to_file in op_map:
+            if b.arith_mode is None:
+                b.arith_op       = op_map[to_file]
+                b.arith_mode     = 'OP1'
+                b.arith_op1_var  = None
+                b.arith_op2_var  = None
+                b.arith_rook_pos = 'a1'
+                self._annotation = f"→ arm operator: {op_map[to_file]}"
+            else:
+                self._annotation = f"→ (operator {op_map[to_file]} ignored — arith in progress)"
             return
 
         # Encoding (existing)
