@@ -1,0 +1,472 @@
+[Event "FizzBuzz 1-15"]
+[Site "Chess.com"]
+[Date "2026.04.29"]
+[Round "?"]
+[White "Lonely Chess"]
+[Black "FizzBuzz"]
+[Result "1-0"]
+
+{ === LONELY CHESS: FizzBuzz range(1,16) === }
+
+1. Nc3 Nc6  { begin_string: p_g2="Fizz" }
+2. g3 Nb8  { declare var p_g2 }
+3. g4 Ra6  { enter_string_encoding_mode }
+4. Nc3 Rb6  { CHAR 'F' bits=1000110 }
+5. Ne4 Rf6
+6. Nc3 Rg6
+7. Ne4 Ra6  { finalise 'F' }
+8. Nc3 Ra8  { reset }
+9. Ne4 Ra6
+10. Nc3 Rb6  { CHAR 'i' bits=1101001 }
+11. Ne4 Rc6
+12. Nc3 Re6
+13. Ne4 Rh6
+14. Nc3 Ra6  { finalise 'i' }
+15. Ne4 Ra8  { reset }
+16. Nc3 Ra6
+17. Ne4 Rb6  { CHAR 'z' bits=1111010 }
+18. Nc3 Rc6
+19. Ne4 Rd6
+20. Nc3 Re6
+21. Ne4 Rg6
+22. Nc3 Ra6  { finalise 'z' }
+23. Ne4 Ra8  { reset }
+24. Nc3 Ra6
+25. Ne4 Rb6  { CHAR 'z' bits=1111010 }
+26. Nc3 Rc6
+27. Ne4 Rd6
+28. Nc3 Re6
+29. Ne4 Rg6
+30. Nc3 Ra6  { finalise 'z' }
+31. Nb1 Ra8  { commit p_g2="Fizz" }
+32. Nc3 Nf6  { begin_string: p_f2="Buzz" }
+33. f3 Ng8  { declare var p_f2 }
+34. f4 Ra6  { enter_string_encoding_mode }
+35. Nc3 Rb6  { CHAR 'B' bits=1000010 }
+36. Ne4 Rg6
+37. Nc3 Ra6  { finalise 'B' }
+38. Ne4 Ra8  { reset }
+39. Nc3 Ra6
+40. Ne4 Rb6  { CHAR 'u' bits=1110101 }
+41. Nc3 Rc6
+42. Ne4 Rd6
+43. Nc3 Rf6
+44. Ne4 Rh6
+45. Nc3 Ra6  { finalise 'u' }
+46. Ne4 Ra8  { reset }
+47. Nc3 Ra6
+48. Ne4 Rb6  { CHAR 'z' bits=1111010 }
+49. Nc3 Rc6
+50. Ne4 Rd6
+51. Nc3 Re6
+52. Ne4 Rg6
+53. Nc3 Ra6  { finalise 'z' }
+54. Ne4 Ra8  { reset }
+55. Nc3 Ra6
+56. Ne4 Rb6  { CHAR 'z' bits=1111010 }
+57. Nc3 Rc6
+58. Ne4 Rd6
+59. Nc3 Re6
+60. Ne4 Rg6
+61. Nc3 Ra6  { finalise 'z' }
+62. Nb1 Ra8  { commit p_f2="Buzz" }
+63. Ke2 Nc6  { for loop start }
+64. Rh2 Nb8  { arm loop var i }
+65. None Ra6  { range encoding (15=0001111) }
+66. None Re6  { range bit[3] }
+67. None Rf6  { range bit[2] }
+68. None Rg6  { range bit[1] }
+69. None Rh6  { range bit[0] }
+70. None Ra6  { range end=15 }
+71. Rh1 Nf6  { loop armed range(1,15) }
+72. Bh3 Ng8  { if%3 i=1 }
+73. Rh3 Nc6  { push i }
+74. Ra3 Nb8  { %open }
+75. Nf6 Ra2
+76. Ng8 Ra3
+77. Nc6 Ra2
+78. Nb8 Ra3
+79. Nf6 Ra2
+80. Ra1 Ng8  { i%3==1 }
+81. Bf1 Nc6  { close if1 }
+82. Bh3 Nb8  { if%5 }
+83. Rh3 Nf6  { push i }
+84. Ra3 Ng8  { %open }
+85. Nc6 Ra2
+86. Nb8 Ra3
+87. Nf6 Ra2
+88. Ng8 Ra3
+89. Nc6 Ra2
+90. Nb8 Ra3
+91. Nf6 Ra2
+92. Ng8 Ra3
+93. Nc6 Ra2
+94. Ra1 Nb8  { i%5==1 }
+95. Bf1 Nf6  { close if2 }
+96. Ke1 Ng8  { →1 }
+97. Ke2 Nc6  { i=2 }
+98. Bh3 Nb8  { if%3 i=2 }
+99. Rh3 Nf6  { push i }
+100. Ra3 Ng8  { %open }
+101. Nc6 Ra2
+102. Nb8 Ra3
+103. Nf6 Ra2
+104. Ng8 Ra3
+105. Nc6 Ra2
+106. Ra1 Nb8  { i%3==2 }
+107. Bf1 Nf6  { close if1 }
+108. Bh3 Ng8  { if%5 }
+109. Rh3 Nc6  { push i }
+110. Ra3 Nb8  { %open }
+111. Nf6 Ra2
+112. Ng8 Ra3
+113. Nc6 Ra2
+114. Nb8 Ra3
+115. Nf6 Ra2
+116. Ng8 Ra3
+117. Nc6 Ra2
+118. Nb8 Ra3
+119. Nf6 Ra2
+120. Ra1 Ng8  { i%5==2 }
+121. Bf1 Nc6  { close if2 }
+122. Ke1 Nb8  { →2 }
+123. Ke2 Nf6  { i=3 }
+124. Bh3 Ng8  { if%3 i=3 }
+125. Rh3 Nc6  { push i }
+126. Ra3 Nb8  { %open }
+127. Nf6 Ra2
+128. Ng8 Ra3
+129. Nc6 Ra2
+130. Nb8 Ra3
+131. Nf6 Ra2
+132. Ra1 Ng8  { i%3==0 }
+133. Bf1 Nc6  { close if1 }
+134. Bh3 Nb8  { if%5 }
+135. Rh3 Nf6  { push i }
+136. Ra3 Ng8  { %open }
+137. Nc6 Ra2
+138. Nb8 Ra3
+139. Nf6 Ra2
+140. Ng8 Ra3
+141. Nc6 Ra2
+142. Nb8 Ra3
+143. Nf6 Ra2
+144. Ng8 Ra3
+145. Nc6 Ra2
+146. Ra1 Nb8  { i%5==3 }
+147. Bf1 Nf6  { close if2 }
+148. Ke1 Ng8  { →Fizz }
+149. Ke2 Nc6  { i=4 }
+150. Bh3 Nb8  { if%3 i=4 }
+151. Rh3 Nf6  { push i }
+152. Ra3 Ng8  { %open }
+153. Nc6 Ra2
+154. Nb8 Ra3
+155. Nf6 Ra2
+156. Ng8 Ra3
+157. Nc6 Ra2
+158. Ra1 Nb8  { i%3==1 }
+159. Bf1 Nf6  { close if1 }
+160. Bh3 Ng8  { if%5 }
+161. Rh3 Nc6  { push i }
+162. Ra3 Nb8  { %open }
+163. Nf6 Ra2
+164. Ng8 Ra3
+165. Nc6 Ra2
+166. Nb8 Ra3
+167. Nf6 Ra2
+168. Ng8 Ra3
+169. Nc6 Ra2
+170. Nb8 Ra3
+171. Nf6 Ra2
+172. Ra1 Ng8  { i%5==4 }
+173. Bf1 Nc6  { close if2 }
+174. Ke1 Nb8  { →4 }
+175. Ke2 Nf6  { i=5 }
+176. Bh3 Ng8  { if%3 i=5 }
+177. Rh3 Nc6  { push i }
+178. Ra3 Nb8  { %open }
+179. Nf6 Ra2
+180. Ng8 Ra3
+181. Nc6 Ra2
+182. Nb8 Ra3
+183. Nf6 Ra2
+184. Ra1 Ng8  { i%3==2 }
+185. Bf1 Nc6  { close if1 }
+186. Bh3 Nb8  { if%5 }
+187. Rh3 Nf6  { push i }
+188. Ra3 Ng8  { %open }
+189. Nc6 Ra2
+190. Nb8 Ra3
+191. Nf6 Ra2
+192. Ng8 Ra3
+193. Nc6 Ra2
+194. Nb8 Ra3
+195. Nf6 Ra2
+196. Ng8 Ra3
+197. Nc6 Ra2
+198. Ra1 Nb8  { i%5==0 }
+199. Bf1 Nf6  { close if2 }
+200. Ke1 Ng8  { →Buzz }
+201. Ke2 Nc6  { i=6 }
+202. Bh3 Nb8  { if%3 i=6 }
+203. Rh3 Nf6  { push i }
+204. Ra3 Ng8  { %open }
+205. Nc6 Ra2
+206. Nb8 Ra3
+207. Nf6 Ra2
+208. Ng8 Ra3
+209. Nc6 Ra2
+210. Ra1 Nb8  { i%3==0 }
+211. Bf1 Nf6  { close if1 }
+212. Bh3 Ng8  { if%5 }
+213. Rh3 Nc6  { push i }
+214. Ra3 Nb8  { %open }
+215. Nf6 Ra2
+216. Ng8 Ra3
+217. Nc6 Ra2
+218. Nb8 Ra3
+219. Nf6 Ra2
+220. Ng8 Ra3
+221. Nc6 Ra2
+222. Nb8 Ra3
+223. Nf6 Ra2
+224. Ra1 Ng8  { i%5==1 }
+225. Bf1 Nc6  { close if2 }
+226. Ke1 Nb8  { →Fizz }
+227. Ke2 Nf6  { i=7 }
+228. Bh3 Ng8  { if%3 i=7 }
+229. Rh3 Nc6  { push i }
+230. Ra3 Nb8  { %open }
+231. Nf6 Ra2
+232. Ng8 Ra3
+233. Nc6 Ra2
+234. Nb8 Ra3
+235. Nf6 Ra2
+236. Ra1 Ng8  { i%3==1 }
+237. Bf1 Nc6  { close if1 }
+238. Bh3 Nb8  { if%5 }
+239. Rh3 Nf6  { push i }
+240. Ra3 Ng8  { %open }
+241. Nc6 Ra2
+242. Nb8 Ra3
+243. Nf6 Ra2
+244. Ng8 Ra3
+245. Nc6 Ra2
+246. Nb8 Ra3
+247. Nf6 Ra2
+248. Ng8 Ra3
+249. Nc6 Ra2
+250. Ra1 Nb8  { i%5==2 }
+251. Bf1 Nf6  { close if2 }
+252. Ke1 Ng8  { →7 }
+253. Ke2 Nc6  { i=8 }
+254. Bh3 Nb8  { if%3 i=8 }
+255. Rh3 Nf6  { push i }
+256. Ra3 Ng8  { %open }
+257. Nc6 Ra2
+258. Nb8 Ra3
+259. Nf6 Ra2
+260. Ng8 Ra3
+261. Nc6 Ra2
+262. Ra1 Nb8  { i%3==2 }
+263. Bf1 Nf6  { close if1 }
+264. Bh3 Ng8  { if%5 }
+265. Rh3 Nc6  { push i }
+266. Ra3 Nb8  { %open }
+267. Nf6 Ra2
+268. Ng8 Ra3
+269. Nc6 Ra2
+270. Nb8 Ra3
+271. Nf6 Ra2
+272. Ng8 Ra3
+273. Nc6 Ra2
+274. Nb8 Ra3
+275. Nf6 Ra2
+276. Ra1 Ng8  { i%5==3 }
+277. Bf1 Nc6  { close if2 }
+278. Ke1 Nb8  { →8 }
+279. Ke2 Nf6  { i=9 }
+280. Bh3 Ng8  { if%3 i=9 }
+281. Rh3 Nc6  { push i }
+282. Ra3 Nb8  { %open }
+283. Nf6 Ra2
+284. Ng8 Ra3
+285. Nc6 Ra2
+286. Nb8 Ra3
+287. Nf6 Ra2
+288. Ra1 Ng8  { i%3==0 }
+289. Bf1 Nc6  { close if1 }
+290. Bh3 Nb8  { if%5 }
+291. Rh3 Nf6  { push i }
+292. Ra3 Ng8  { %open }
+293. Nc6 Ra2
+294. Nb8 Ra3
+295. Nf6 Ra2
+296. Ng8 Ra3
+297. Nc6 Ra2
+298. Nb8 Ra3
+299. Nf6 Ra2
+300. Ng8 Ra3
+301. Nc6 Ra2
+302. Ra1 Nb8  { i%5==4 }
+303. Bf1 Nf6  { close if2 }
+304. Ke1 Ng8  { →Fizz }
+305. Ke2 Nc6  { i=10 }
+306. Bh3 Nb8  { if%3 i=10 }
+307. Rh3 Nf6  { push i }
+308. Ra3 Ng8  { %open }
+309. Nc6 Ra2
+310. Nb8 Ra3
+311. Nf6 Ra2
+312. Ng8 Ra3
+313. Nc6 Ra2
+314. Ra1 Nb8  { i%3==1 }
+315. Bf1 Nf6  { close if1 }
+316. Bh3 Ng8  { if%5 }
+317. Rh3 Nc6  { push i }
+318. Ra3 Nb8  { %open }
+319. Nf6 Ra2
+320. Ng8 Ra3
+321. Nc6 Ra2
+322. Nb8 Ra3
+323. Nf6 Ra2
+324. Ng8 Ra3
+325. Nc6 Ra2
+326. Nb8 Ra3
+327. Nf6 Ra2
+328. Ra1 Ng8  { i%5==0 }
+329. Bf1 Nc6  { close if2 }
+330. Ke1 Nb8  { →Buzz }
+331. Ke2 Nf6  { i=11 }
+332. Bh3 Ng8  { if%3 i=11 }
+333. Rh3 Nc6  { push i }
+334. Ra3 Nb8  { %open }
+335. Nf6 Ra2
+336. Ng8 Ra3
+337. Nc6 Ra2
+338. Nb8 Ra3
+339. Nf6 Ra2
+340. Ra1 Ng8  { i%3==2 }
+341. Bf1 Nc6  { close if1 }
+342. Bh3 Nb8  { if%5 }
+343. Rh3 Nf6  { push i }
+344. Ra3 Ng8  { %open }
+345. Nc6 Ra2
+346. Nb8 Ra3
+347. Nf6 Ra2
+348. Ng8 Ra3
+349. Nc6 Ra2
+350. Nb8 Ra3
+351. Nf6 Ra2
+352. Ng8 Ra3
+353. Nc6 Ra2
+354. Ra1 Nb8  { i%5==1 }
+355. Bf1 Nf6  { close if2 }
+356. Ke1 Ng8  { →11 }
+357. Ke2 Nc6  { i=12 }
+358. Bh3 Nb8  { if%3 i=12 }
+359. Rh3 Nf6  { push i }
+360. Ra3 Ng8  { %open }
+361. Nc6 Ra2
+362. Nb8 Ra3
+363. Nf6 Ra2
+364. Ng8 Ra3
+365. Nc6 Ra2
+366. Ra1 Nb8  { i%3==0 }
+367. Bf1 Nf6  { close if1 }
+368. Bh3 Ng8  { if%5 }
+369. Rh3 Nc6  { push i }
+370. Ra3 Nb8  { %open }
+371. Nf6 Ra2
+372. Ng8 Ra3
+373. Nc6 Ra2
+374. Nb8 Ra3
+375. Nf6 Ra2
+376. Ng8 Ra3
+377. Nc6 Ra2
+378. Nb8 Ra3
+379. Nf6 Ra2
+380. Ra1 Ng8  { i%5==2 }
+381. Bf1 Nc6  { close if2 }
+382. Ke1 Nb8  { →Fizz }
+383. Ke2 Nf6  { i=13 }
+384. Bh3 Ng8  { if%3 i=13 }
+385. Rh3 Nc6  { push i }
+386. Ra3 Nb8  { %open }
+387. Nf6 Ra2
+388. Ng8 Ra3
+389. Nc6 Ra2
+390. Nb8 Ra3
+391. Nf6 Ra2
+392. Ra1 Ng8  { i%3==1 }
+393. Bf1 Nc6  { close if1 }
+394. Bh3 Nb8  { if%5 }
+395. Rh3 Nf6  { push i }
+396. Ra3 Ng8  { %open }
+397. Nc6 Ra2
+398. Nb8 Ra3
+399. Nf6 Ra2
+400. Ng8 Ra3
+401. Nc6 Ra2
+402. Nb8 Ra3
+403. Nf6 Ra2
+404. Ng8 Ra3
+405. Nc6 Ra2
+406. Ra1 Nb8  { i%5==3 }
+407. Bf1 Nf6  { close if2 }
+408. Ke1 Ng8  { →13 }
+409. Ke2 Nc6  { i=14 }
+410. Bh3 Nb8  { if%3 i=14 }
+411. Rh3 Nf6  { push i }
+412. Ra3 Ng8  { %open }
+413. Nc6 Ra2
+414. Nb8 Ra3
+415. Nf6 Ra2
+416. Ng8 Ra3
+417. Nc6 Ra2
+418. Ra1 Nb8  { i%3==2 }
+419. Bf1 Nf6  { close if1 }
+420. Bh3 Ng8  { if%5 }
+421. Rh3 Nc6  { push i }
+422. Ra3 Nb8  { %open }
+423. Nf6 Ra2
+424. Ng8 Ra3
+425. Nc6 Ra2
+426. Nb8 Ra3
+427. Nf6 Ra2
+428. Ng8 Ra3
+429. Nc6 Ra2
+430. Nb8 Ra3
+431. Nf6 Ra2
+432. Ra1 Ng8  { i%5==4 }
+433. Bf1 Nc6  { close if2 }
+434. Ke1 Nb8  { →14 }
+435. Ke2 Nf6  { i=15 }
+436. Bh3 Ng8  { if%3 i=15 }
+437. Rh3 Nc6  { push i }
+438. Ra3 Nb8  { %open }
+439. Nf6 Ra2
+440. Ng8 Ra3
+441. Nc6 Ra2
+442. Nb8 Ra3
+443. Nf6 Ra2
+444. Ra1 Ng8  { i%3==0 }
+445. Bf1 Nc6  { close if1 }
+446. Bh3 Nb8  { if%5 }
+447. Rh3 Nf6  { push i }
+448. Ra3 Ng8  { %open }
+449. Nc6 Ra2
+450. Nb8 Ra3
+451. Nf6 Ra2
+452. Ng8 Ra3
+453. Nc6 Ra2
+454. Nb8 Ra3
+455. Nf6 Ra2
+456. Ng8 Ra3
+457. Nc6 Ra2
+458. Ra1 Nb8  { i%5==0 }
+459. Bf1 Nf6  { close if2 }
+460. Ke1 Ng8  { →FizzBuzz }
+
+1-0
