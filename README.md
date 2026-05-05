@@ -8,6 +8,25 @@ Created by Perfect Phanitchaleun and Nicolaus ReyasBautista — CS 420 Final Pro
 
 ---
 
+## ⚠️ Chess Legality Disclaimer
+
+Lonely Chess PGN files are valid **Lonely Chess programs**, not necessarily valid
+over-the-board chess games. The language's semantic requirements — specific piece
+movements to encode binary values, trigger control flow, and perform arithmetic —
+often conflict with standard chess rules (pieces moving through occupied squares,
+rooks bypassing pawns, kings moving to occupied squares, etc.).
+
+This is intentional and expected. Like other esoteric languages (Brainfuck source
+code is not valid C, Whitespace programs are not valid prose), Lonely Chess source
+code operates in its own domain. The `.pgn` file format is used as a convenient,
+human-readable notation for encoding programs — not as a claim that the game could
+be played on a real chessboard.
+
+The interpreter reads only the **move tokens** (e.g. `Na3`, `Ra6`, `Ke2`) and
+ignores chess legality entirely. Any valid PGN file is a valid Lonely Chess program.
+
+---
+
 ## Files
 
 | File | Purpose |
