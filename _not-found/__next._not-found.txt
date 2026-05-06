@@ -2,4 +2,4 @@
 2:I[60128,["/Lonely-Chess-CS-420/_next/static/chunks/0o8nrpif5h_h1.js"],"default"]
 3:I[70768,["/Lonely-Chess-CS-420/_next/static/chunks/0o8nrpif5h_h1.js"],"default"]
 4:[]
-0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"yHdsER-UTEqQhtOL417U7"}
+0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"hqS2gZWhFNw_xooo-ep2M"}
