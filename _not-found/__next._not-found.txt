@@ -1,5 +1,5 @@
 1:"$Sreact.fragment"
-2:I[39756,["/Lonely-Chess-CS-420/_next/static/chunks/0dbhjjzl8qfwv.js"],"default"]
-3:I[37457,["/Lonely-Chess-CS-420/_next/static/chunks/0dbhjjzl8qfwv.js"],"default"]
+2:I[39756,["https://sailmanseeulater.github.io/Lonely-Chess-CS-420/_next/static/chunks/0dbhjjzl8qfwv.js"],"default"]
+3:I[37457,["https://sailmanseeulater.github.io/Lonely-Chess-CS-420/_next/static/chunks/0dbhjjzl8qfwv.js"],"default"]
 4:[]
-0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"EXCNRhFQzCn6az4dvi7kU"}
+0:{"rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"isPartial":false,"staleTime":300,"varyParams":"$W4","buildId":"0C3aV4EUT2UP2KF7xR3x8"}
