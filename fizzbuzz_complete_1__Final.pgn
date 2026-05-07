@@ -72,12 +72,12 @@
 62. Nb1 Ra8  { commit p_f2="Buzz" }
 63. Ke2 Nc6  { for loop start }
 64. Rh2 Nb8  { arm loop var i }
-65. None Ra6  { range encoding (15=0001111) }
-66. None Re6  { range bit[3] }
-67. None Rf6  { range bit[2] }
-68. None Rg6  { range bit[1] }
-69. None Rh6  { range bit[0] }
-70. None Ra6  { range end=15 }
+65. Bd2 Ra6  { range encoding (15=0001111) }
+66. Bc1 Re6  { range bit[3] }
+67. Bd2 Rf6  { range bit[2] }
+68. Bc1 Rg6  { range bit[1] }
+69. Bd2 Rh6  { range bit[0] }
+70. Bc1 Ra6  { range end=15 }
 71. Rh1 Nf6  { loop armed range(1,15) }
 72. Bh3 Ng8  { if%3 i=1 }
 73. Rh3 Nc6  { push i }
