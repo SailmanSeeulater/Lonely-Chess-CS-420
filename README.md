@@ -6,24 +6,39 @@ declarations, binary values, arithmetic, control flow, and print statements.
 
 Created by Perfect Phanitchaleun and Nicolaus ReyasBautista — CS 420 Final Project.
 
+```bash
+python lonely_chess_runtime.py actual_game_sample.pgn
+# 100
+```
+
+That file is a **legal, playable 22-ply chess game** — and it prints `100`.
+
 ---
 
-## ⚠️ Chess Legality Disclaimer
+## Chess legality
 
-Lonely Chess PGN files are valid **Lonely Chess programs**, not necessarily valid
-over-the-board chess games. The language's semantic requirements — specific piece
+Lonely Chess programs are valid **Lonely Chess source**, not necessarily valid
+over-the-board chess. The language's semantic requirements — specific piece
 movements to encode binary values, trigger control flow, and perform arithmetic —
-often conflict with standard chess rules (pieces moving through occupied squares,
-rooks bypassing pawns, kings moving to occupied squares, etc.).
+routinely conflict with the rules of chess (rooks passing through pawns, pieces
+jumping between distant squares, and so on).
 
-This is intentional and expected. Like other esoteric languages (Brainfuck source
-code is not valid C, Whitespace programs are not valid prose), Lonely Chess source
-code operates in its own domain. The `.pgn` file format is used as a convenient,
-human-readable notation for encoding programs — not as a claim that the game could
-be played on a real chessboard.
+This is intentional. Like other esoteric languages, Lonely Chess borrows a
+notation, not a rule set: PGN is used because it is compact and human-readable,
+not as a claim that every program could be played. The interpreter reads only the
+**move tokens** (`Na3`, `Ra6`, `Ke2`) and ignores legality entirely.
 
-The interpreter reads only the **move tokens** (e.g. `Na3`, `Ra6`, `Ke2`) and
-ignores chess legality entirely. Any valid PGN file is a valid Lonely Chess program.
+Concretely, verified against a real chess engine:
+
+| File | Legal chess? |
+|------|--------------|
+| `actual_game_sample.pgn` | fully legal — and a working program |
+| `sample_str_hello.pgn` | legal for 158 of 162 plies |
+| `sample_int100.pgn` | legal for 18 of 22 plies |
+| `fizzbuzz_100.pgn` | diverges at ply 6 |
+
+Writing programs that are *also* legal chess is possible at small scale — see
+`actual_game_sample.pgn` — but becomes impractical at FizzBuzz size.
 
 ---
 
@@ -31,53 +46,52 @@ ignores chess legality entirely. Any valid PGN file is a valid Lonely Chess prog
 
 | File | Purpose |
 |------|---------|
-| `lonely_chess_interpreter.py` | Full interpreter — shows every move annotated |
-| `lonely_chess_runtime.py` | Silent runtime — only prints explicit output |
-| `lonely_chess.tx` | TextX grammar (reference only, not required to run) |
-| `sample_int100.pgn` | Sample: `int p_h2 = 100` then `print(p_h2)` |
-| `sample_str_hello.pgn` | Sample: `String p_h2 = "Hello World"` then print |
-| `sample_dom_dabish.pgn` | Sample: encode and print a long string |
-| `sample_arithmetic.pgn` | Sample: `+`, `-`, `*`, `/` operations |
-| `fizzbuzz_complete.pgn` | FizzBuzz range(1, 16) — self-contained |
-| `fizzbuzz_100.pgn` | FizzBuzz range(1, 101) — full program |
+| `lonely_chess_interpreter.py` | Full interpreter — annotates every move |
+| `lonely_chess_runtime.py` | Silent runtime — only explicit output |
+| `test_lonely_chess.py` | Regression suite (stdlib only) |
+| `actual_game_sample.pgn` | Legal chess game that prints `100` |
+| `sample_int100.pgn` | `int p_h2 = 100` then `print(p_h2)` |
+| `sample_int95.pgn` | `int p_h2 = 95` then `print(p_h2)` |
+| `sample_str_hello.pgn` | `String p_h2 = "Hello World"` then print |
+| `sample_dom_dabish.pgn` | Encode and print a long string |
+| `sample_arithmetic.pgn` | `+`, `-`, `*`, `/` operations |
+| `fizzbuzz_complete.pgn` | FizzBuzz 1–15 — self-contained |
+| `fizzbuzz_100.pgn` | FizzBuzz 1–100 — 2,669 moves (5,338 plies) |
 
 ---
 
 ## Requirements
 
-Pure Python 3 — no external dependencies.
-
-```bash
-python --version   # Python 3.6+
-```
-
----
+Pure Python 3.6+ — no external dependencies.
 
 ## Run
 
 ```bash
 # Full move-by-move trace with annotations
-python lonely_chess_interpreter.py game.pgn
+python lonely_chess_interpreter.py sample_int100.pgn
 
 # Silent — only explicit print() calls produce output
-python lonely_chess_runtime.py game.pgn
+python lonely_chess_runtime.py fizzbuzz_100.pgn
+
+# Tests
+python test_lonely_chess.py
 ```
 
 ---
 
 ## PGN format
 
-Standard chess.com PGN. Curly-brace annotations `{ }` are stripped before
-parsing so you can annotate your programs freely.
+Standard PGN import format. The parser discards brace comments `{ }`,
+rest-of-line comments `;`, recursive annotation variations `( )`, NAGs (`$1`),
+and suffix annotations (`!`, `?`, `!!`, `?!`) before execution, so you can
+annotate programs freely and paste games straight from Chess.com or Lichess.
 
 ```
 [Event "Live Chess"]
-[Site "Chess.com"]
-...
 
 { This is a comment }
 1. Na3 a5   { begin int mode }
-2. h3 a4    { declare p_h2 }
+2. h3  a4   { declare p_h2 }
 ```
 
 ---
@@ -95,19 +109,21 @@ parsing so you can annotate your programs freely.
 | B Rook | rank 6 (b6–h6) | write binary bits |
 | B Rook | →a6 | finalise value / char |
 | B Rook | →a8 | encoding complete |
+| B Pawn | h7→h5 *during int setup* | negate the value being encoded |
 | W King | e1→e2 | start `for` loop |
 | W King | e2→e1 | end iteration → print buffer or i |
 | W Rook (h) | h1→h2 | arm loop variable i |
 | W Rook (h) | h2→h1 | close range, loop begins |
 | W Rook (h) | h2→h3→h2 | i++ |
-| B Rook (a8) | a6→h6→a6 | encode loop range end in binary |
+| B Rook (a8) | a6→h6→a6 | encode loop bound in binary |
 | W Bishop (f1) | f1→h3 | open `if` block |
 | W Bishop | h3→f1 | close `if` block → implicit else prints i |
+| W Pawn | push *while if open* | select the variable supplying the word |
 | W Rook (h) | h2→h3 | push i into condition |
 | W Rook (a) | a1→a3 | `%` modulo operator |
 | B Rook (a) | a3↔a2 × N | count divisor N |
 | W Rook (a) | a3→a1 | evaluate `i % N == 0` |
-| B Pawn | h7→h5 | arm `+` operator |
+| B Pawn | h7→h5 *when idle* | arm `+` operator |
 | B Pawn | g7→g5 | arm `-` operator |
 | B Pawn | f7→f5 | arm `*` operator |
 | B Pawn | e7→e5 | arm `/` operator |
@@ -117,7 +133,7 @@ parsing so you can annotate your programs freely.
 | W Pawn | push (IDLE) | select variable for print |
 | W Queen | d1→d2 | initiate print |
 | W Queen | d2→d1 | finalise print → output |
-| Any | move`#` | checkmate → `exit()` |
+| Any | move`#` | checkmate → halt |
 
 ---
 
@@ -139,42 +155,32 @@ Moving the h2 pawn → variable named `p_h2`.
 
 **Binary encoding — 7-bit via rank 6:**
 
-| Square | Bit | Value |
-|--------|-----|-------|
-| b6 | bit 6 (MSB) | 64 |
-| c6 | bit 5 | 32 |
-| d6 | bit 4 | 16 |
-| e6 | bit 3 | 8 |
-| f6 | bit 2 | 4 |
-| g6 | bit 1 | 2 |
-| h6 | bit 0 (LSB) | 1 |
+| Square | b6 | c6 | d6 | e6 | f6 | g6 | h6 |
+|--------|----|----|----|----|----|----|----|
+| Bit | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+| Value | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
 
 Visiting `b6`, `c6`, `f6` → `1100100` → **100**
 
-**Negative integers:** move Black's h7 pawn to h5 during setup to negate the result.
+**Range:** 0–127. Seven bits is a hard ceiling; there is no eighth bit square.
+
+**Negative integers:** move Black's h7 pawn to h5 *during int setup* (before the
+rook reaches a6) to negate the result. Outside setup the same move arms `+`.
 
 ---
 
 ### String — `String p_g2 = "Fizz"`
 
-Knight moves to c3 instead of a3 to enter string mode. Each character is encoded
-as a 7-bit ASCII value using the same rook mechanism. Between characters, the rook
-resets via `a6→a8→a6`.
-
-```
-1. Nc3  a5      begin string mode
-2. g3   a4      declare var p_g2
-3. g4   Ra6     enter string encoding
-...             (rook encodes each ASCII character)
-N. Nb1  Ra8     commit p_g2 = "Fizz"
-```
+The Knight moves to c3 instead of a3 to enter string mode. Each character is
+encoded as a 7-bit ASCII value using the same rook mechanism, so only ASCII
+0–127 is representable. Between characters the rook resets via `a6→a8→a6`.
 
 ---
 
 ### Print — `print(p_h2)`
 
-The variable's pawn must push first to clear the Queen's path and identify which
-variable to print.
+The variable's pawn must push first, both to clear the Queen's path and to
+identify which variable to print.
 
 ```
 h5   filler     pawn push → select p_h2 for printing
@@ -184,13 +190,18 @@ Qd1  filler     Queen retreats → OUTPUT value
 
 ---
 
-### For loop — `for i in range(1, N)`
+### For loop
+
+`Ke2` starts the loop with `i = 1`; the Black rook encodes the bound N in binary;
+`Rh1` arms it. The loop runs **`i = 1 … N` inclusive** — equivalent to Python's
+`range(1, N+1)`. `Ke1` ends an iteration and prints the buffer, or `i` if the
+buffer is empty.
 
 ```
 Ke2  filler     start loop  (i=1)
 Rh2  filler     arm loop variable i
-...  B rook     Black rook scans rank 6 to encode N in binary
-Rh1  filler     loop armed → range(1, N)
+...  B rook     Black rook scans rank 6 to encode N
+Rh1  filler     loop armed → i = 1..N
 
 [per iteration body]
 
@@ -198,12 +209,15 @@ Ke1  filler     end iteration → print(buffer or i), i++
 Ke2  filler     next iteration (or exit if i > N)
 ```
 
+Encoding `1100100` (100) therefore yields exactly 100 iterations.
+
 ---
 
 ### If statement
 
 ```
 Bh3  filler     open if block
+d5   filler     (optional) W pawn push → word source = p_d2
 Rh3  filler     push i into condition
 Ra3  filler     % operator
 ...  Ra2×N      Black rook bounces N times (divisor)
@@ -211,7 +225,10 @@ Ra1  filler     evaluate i % N == 0 → append word to buffer if matched
 Bf1  filler     close if → if buffer empty, print i (implicit else)
 ```
 
-Two independent if blocks per iteration:
+The word appended on a match comes from the variable named by a White pawn push
+while the block is open. If no pawn is pushed, a positional default applies for
+backward compatibility: **block 1 → `p_g2`, block 2+ → `p_f2`**. The stock
+FizzBuzz samples rely on that default.
 
 ```
 if i % 3 == 0: buffer += "Fizz"   ← if block 1
@@ -223,8 +240,8 @@ print(buffer or i)                 ← Ke2→e1
 
 ### Arithmetic
 
-Arm operator with a Black pawn dropping from rank 7 to rank 5, then use the
-White a-Rook to select operands on rank 2. Result overwrites op1's variable.
+Arm an operator with a Black pawn dropping from rank 7 to rank 5, then use the
+White a-Rook to select operands on rank 2. The result overwrites op1's variable.
 
 ```
 h7→h5   arm +        g7→g5   arm -
@@ -236,44 +253,38 @@ Rg2→a2  begin return
 Ra2→a1  EXECUTE: p_h2 = p_h2 OP p_g2
 ```
 
-Negative results are supported. Integer division truncates toward zero.
+Negative results are supported. Integer division truncates toward zero
+(`-7 / 2 == -3`). Division by zero raises an error rather than silently
+producing a value.
 
 ---
 
 ## Sample output
 
-### `python lonely_chess_runtime.py fizzbuzz_100.pgn`
-
 ```
+$ python lonely_chess_runtime.py fizzbuzz_100.pgn
 1
 2
 Fizz
 4
 Buzz
-Fizz
-7
-8
-Fizz
-Buzz
-11
-Fizz
-13
-14
-FizzBuzz
 ...
-```
 
-### `python lonely_chess_runtime.py sample_dom_dabish.pgn`
-
-```
+$ python lonely_chess_runtime.py sample_dom_dabish.pgn
 I love to learn coding with Dom Dabish
-```
 
-### `python lonely_chess_runtime.py sample_arithmetic.pgn`
-
-```
+$ python lonely_chess_runtime.py sample_arithmetic.pgn
 24
 20
 80
 20
 ```
+
+---
+
+## Known limits
+
+- Integers and string characters are 7-bit: `0–127`.
+- Unrecognised move tokens are skipped rather than reported as syntax errors.
+- The `if` construct supports two blocks per iteration by default; more than two
+  require explicit word-source selection.

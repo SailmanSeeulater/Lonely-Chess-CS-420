@@ -25,6 +25,14 @@ Per-iteration move structure:
 import sys, re
 
 
+class ProgramExit(Exception):
+    """Raised by a checkmate (`#`) move to halt the program.
+
+    Using an exception rather than sys.exit() keeps the interpreter embeddable:
+    a host program can run a .pgn file without having its own process killed.
+    """
+
+
 # ─── Regex move parser ────────────────────────────────────────────────────────
 
 MOVE_RE = re.compile(
@@ -55,26 +63,47 @@ def parse_move(token):
 # ─── PGN tokeniser ───────────────────────────────────────────────────────────
 
 def parse_pgn(path):
+    """Tokenise a PGN file into (move_num, white_token, black_token) triples.
+
+    Handles the full standard PGN import format: brace comments, rest-of-line
+    (";") comments, recursive annotation variations, NAGs ($1), and suffix
+    annotations (!, ?, !!, ?!).  Anything that is not a playable move token is
+    discarded *before* plies are paired, so stray tokens can never desynchronise
+    White and Black for the remainder of the file.
+    """
     with open(path, 'r') as f:
         text = f.read()
-    text = re.sub(r'\{[^}]*\}', '', text)
+
     headers = re.findall(r'\[(\w+)\s+"([^"]*)"\]', text)
-    move_text = re.sub(r'\[[^\]]*\]', '', text)
-    move_text = re.sub(r'(1-0|0-1|1/2-1/2|\*)', '', move_text).strip()
-    raw_tokens = move_text.split()
-    move_tokens = [t for t in raw_tokens if not re.fullmatch(r'\d+\.+', t)]
+
+    move_text = re.sub(r'\{[^}]*\}', ' ', text)          # { brace comments }
+    move_text = re.sub(r';[^\n]*', ' ', move_text)        # ; rest-of-line comments
+    move_text = re.sub(r'\[[^\]]*\]', ' ', move_text)     # [Header "tags"]
+
+    # Recursive annotation variations — innermost first, repeat until stable.
+    prev = None
+    while prev != move_text:
+        prev = move_text
+        move_text = re.sub(r'\([^()]*\)', ' ', move_text)
+
+    move_text = re.sub(r'\$\d+', ' ', move_text)          # NAGs
+    move_text = re.sub(r'(1-0|0-1|1/2-1/2|\*)', ' ', move_text)
+
+    tokens = []
+    for raw in move_text.split():
+        tok = re.sub(r'^\d+\.+', '', raw)                # glued "12.Nf3"
+        tok = tok.rstrip('!?')                            # suffix annotations
+        if not tok or re.fullmatch(r'\d+\.*', tok):
+            continue
+        if parse_move(tok) is None:
+            continue                                      # never consumes a ply slot
+        tokens.append(tok)
+
     moves = []
-    i = 0
-    move_num = 1
-    while i < len(move_tokens):
-        white = move_tokens[i]; i += 1
-        black = move_tokens[i] if i < len(move_tokens) else None
-        if black and re.fullmatch(r'\d+\.+', black):
-            black = None
-        else:
-            i += 1
-        moves.append((move_num, white, black))
-        move_num += 1
+    for i in range(0, len(tokens), 2):
+        white = tokens[i]
+        black = tokens[i + 1] if i + 1 < len(tokens) else None
+        moves.append((i // 2 + 1, white, black))
     return headers, moves
 
 
@@ -110,6 +139,7 @@ class BoardState:
         # If block
         self.if_open        = False
         self.if_count       = 0   # how many if blocks opened this iteration
+        self.if_var         = None  # variable supplying this block's word
 
         # Modulo
         self.mod_open       = False
@@ -140,10 +170,13 @@ class LonelyChessInterpreter:
             print(f"  {key:15s} {val}")
         print()
 
-        for move_num, white_tok, black_tok in moves:
-            self._step(move_num, 'W', white_tok)
-            if black_tok:
-                self._step(move_num, 'B', black_tok)
+        try:
+            for move_num, white_tok, black_tok in moves:
+                self._step(move_num, 'W', white_tok)
+                if black_tok:
+                    self._step(move_num, 'B', black_tok)
+        except ProgramExit:
+            pass
 
         print()
         print("─" * 56)
@@ -239,7 +272,7 @@ class LonelyChessInterpreter:
             if b.mode == 'FOR_RANGE':
                 b.mode           = 'FOR_RUNNING'
                 b.loop_rook_pos  = 'h1'
-                self._annotation = f"→ loop armed  range(1, {b.loop_end})"
+                self._annotation = f"→ loop armed  range(1, {b.loop_end + 1})"
             return
 
         # W Rook h2→h3 : push i into condition OR i++ step 1
@@ -257,8 +290,17 @@ class LonelyChessInterpreter:
         # W Bishop f1→h3 : open if block
         if piece == 'B' and to_file == 'h' and to_rank == 3:
             b.if_open   = True
+            b.if_var    = None
             b.if_count += 1
             self._annotation = f"→ if  (block {b.if_count})"
+            return
+
+        # W Pawn push while an if block is open : choose which variable
+        # supplies the word appended on a match.  Omit it and the historical
+        # positional default applies (block 1 -> p_g2, block 2+ -> p_f2).
+        if piece == 'P' and b.if_open:
+            b.if_var = f"p_{to_file}2"
+            self._annotation = f"→ if-block word source: {b.if_var}"
             return
 
         # W Bishop h3→f1 : close if block
@@ -285,7 +327,7 @@ class LonelyChessInterpreter:
             b.mod_rook_pos = 'a1'
             matched        = (b.loop_i % divisor == 0) if divisor > 0 else False
             if matched:
-                var    = 'p_g2' if b.if_count == 1 else 'p_f2'
+                var    = b.if_var or ('p_g2' if b.if_count == 1 else 'p_f2')
                 word   = b.variables.get(var, f"<{var}>")
                 b.output_buffer += word
                 self._annotation = f"→ i%{divisor}==0 ✓  buffer+=\"{word}\"  buffer=\"{b.output_buffer}\""
@@ -327,7 +369,12 @@ class LonelyChessInterpreter:
             if   op == '+': result = v1 + v2
             elif op == '-': result = v1 - v2
             elif op == '*': result = v1 * v2
-            elif op == '/': result = int(v1 / v2) if v2 != 0 else 0
+            elif op == '/':
+                if v2 == 0:
+                    raise ZeroDivisionError(
+                        f"division by zero: {b.arith_op1_var} / {b.arith_op2_var}")
+                q      = abs(v1) // abs(v2)          # exact; truncates toward zero
+                result = q if (v1 < 0) == (v2 < 0) else -q
             b.variables[b.arith_op1_var] = result
             self._annotation = f"→ EXECUTE: {b.arith_op1_var} = {v1} {op} {v2} = {result}"
             b.arith_op = None; b.arith_mode = None
@@ -439,7 +486,12 @@ class LonelyChessInterpreter:
 
         # Setup fillers
         if piece == 'P' and b.mode in ('INT_SETUP', 'STR_SETUP'):
-            self._annotation = "→ clear path (no-op)"
+            # Black h7->h5 during INT_SETUP negates the value about to be encoded.
+            if b.mode == 'INT_SETUP' and to_file == 'h' and to_rank == 5:
+                b.negative_flag  = True
+                self._annotation = "→ negate  (value will be negative)"
+            else:
+                self._annotation = "→ clear path (no-op)"
             return
 
         # Arithmetic operator signals (Black pawn rank 7→5)
@@ -507,13 +559,20 @@ class LonelyChessInterpreter:
         print("  Final variable store:")
         for k, v in self.board.variables.items():
             print(f"    {k} = {repr(v)}")
-        sys.exit(0)
+        raise ProgramExit()
 
 
 # ─── Entry point ─────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print("Usage: python lonely_chess_interpreter.py <game.pgn>")
+        print("Usage: python lonely_chess_interpreter.py <game.pgn>", file=sys.stderr)
         sys.exit(1)
-    LonelyChessInterpreter().run(sys.argv[1])
+    try:
+        LonelyChessInterpreter().run(sys.argv[1])
+    except FileNotFoundError:
+        print(f"error: no such PGN file: {sys.argv[1]}", file=sys.stderr)
+        sys.exit(1)
+    except (ZeroDivisionError, ValueError) as exc:
+        print(f"runtime error: {exc}", file=sys.stderr)
+        sys.exit(1)
