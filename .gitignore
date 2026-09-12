@@ -24,3 +24,8 @@ Thumbs.db
 # Env
 .env
 .env.local
+
+# Claude Code local settings (machine-specific, e.g. impeccable hooks)
+.claude/settings.local.json
+# Impeccable tool local state
+.impeccable/
