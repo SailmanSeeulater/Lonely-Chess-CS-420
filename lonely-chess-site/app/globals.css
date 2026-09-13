@@ -183,6 +183,19 @@
   to { background-position: 64px 0, 96px 32px; }
 }
 
+/* Chess glyphs: one filled set for both sides, told apart by fill, with a
+   thin stroke so a piece stays legible on either square color. */
+.piece-white {
+  color: var(--color-board-light);
+  -webkit-text-stroke: 0.045em var(--color-board-dark);
+  paint-order: stroke fill;
+}
+.piece-black {
+  color: var(--color-gold);
+  -webkit-text-stroke: 0.045em var(--color-foreground);
+  paint-order: stroke fill;
+}
+
 .glow-brass {
   box-shadow: 0 12px 60px -12px color-mix(in oklch, var(--color-primary) 35%, transparent);
 }

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Chessboard } from "@/components/chessboard";
 import {
   Copy,
   Play,
@@ -11,7 +12,6 @@ import {
   BookOpen,
   ChessKnight,
   ChessRook,
-  ChessBishop,
   ChessQueen,
   ChessPawn,
 } from "lucide-react";
@@ -487,98 +487,6 @@ function RuleRow({ square, title, children }: { square: string; title: string; c
   );
 }
 
-type PlacedPiece = { file: number; rank: number; glyph: string; isWhite: boolean };
-
-function startingPosition(): PlacedPiece[] {
-  const backRank = ["r", "n", "b", "q", "k", "b", "n", "r"];
-  const glyphs: Record<string, [string, string]> = {
-    // [white glyph, black glyph]
-    k: ["♔", "♚"],
-    q: ["♕", "♛"],
-    r: ["♖", "♜"],
-    b: ["♗", "♝"],
-    n: ["♘", "♞"],
-    p: ["♙", "♟"],
-  };
-  const pieces: PlacedPiece[] = [];
-  backRank.forEach((p, i) => {
-    pieces.push({ file: i, rank: 0, glyph: glyphs[p][0], isWhite: true });
-    pieces.push({ file: i, rank: 7, glyph: glyphs[p][1], isWhite: false });
-  });
-  for (let i = 0; i < 8; i++) {
-    pieces.push({ file: i, rank: 1, glyph: glyphs.p[0], isWhite: true });
-    pieces.push({ file: i, rank: 6, glyph: glyphs.p[1], isWhite: false });
-  }
-  return pieces;
-}
-
-function ChessboardPlate() {
-  const size = 40;
-  const board = 8 * size;
-  const pieces = startingPosition();
-  const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-
-  return (
-    <div className="glow-brass rounded-md border border-primary/25 bg-card p-5">
-      <svg
-        viewBox={`-18 -18 ${board + 36} ${board + 36}`}
-        className="w-full"
-        role="img"
-        aria-label="Standard chess starting position — every legal Lonely Chess program begins here before its moves start encoding the program."
-      >
-        {Array.from({ length: 8 }).map((_, r) =>
-          Array.from({ length: 8 }).map((_, f) => {
-            const dark = (r + f) % 2 === 1;
-            const y = board - size - r * size;
-            return (
-              <rect
-                key={`${r}-${f}`}
-                x={f * size}
-                y={y}
-                width={size}
-                height={size}
-                fill={dark ? "var(--color-board-dark)" : "var(--color-board-light)"}
-              />
-            );
-          })
-        )}
-        <rect x={0} y={0} width={board} height={board} fill="none" stroke="var(--color-primary)" strokeWidth={2} />
-        {files.map((f, i) => (
-          <text key={f} x={i * size + size / 2} y={board + 16} textAnchor="middle" fontFamily="var(--font-mono)" fontSize={11} fill="var(--color-primary)">
-            {f}
-          </text>
-        ))}
-        {[8, 7, 6, 5, 4, 3, 2, 1].map((rankLabel, i) => (
-          <text key={rankLabel} x={-12} y={i * size + size / 2 + 4} textAnchor="middle" fontFamily="var(--font-mono)" fontSize={11} fill="var(--color-primary)">
-            {rankLabel}
-          </text>
-        ))}
-        {pieces.map((p, idx) => {
-          const y = board - size - p.rank * size;
-          return (
-            <text
-              key={idx}
-              x={p.file * size + size / 2}
-              y={y + size / 2 + 9}
-              textAnchor="middle"
-              fontSize={26}
-              style={{ paintOrder: "stroke fill" }}
-              stroke={p.isWhite ? "var(--color-board-dark)" : "var(--color-foreground)"}
-              strokeWidth={1.25}
-              fill={p.isWhite ? "var(--color-board-light)" : "var(--color-gold)"}
-            >
-              {p.glyph}
-            </text>
-          );
-        })}
-      </svg>
-      <p className="mt-4 text-center font-mono text-[11px] tracking-wide text-muted-foreground">
-        every Lonely Chess program starts here — the moves are the source
-      </p>
-    </div>
-  );
-}
-
 function SiteNav() {
   return (
     <header className="sticky top-0 z-20 border-b border-border/80 bg-background/85 backdrop-blur-sm">
@@ -648,7 +556,7 @@ export default function LonelyChessSite() {
               </a>
             </div>
           </div>
-          <ChessboardPlate />
+          <Chessboard />
         </div>
       </section>
 

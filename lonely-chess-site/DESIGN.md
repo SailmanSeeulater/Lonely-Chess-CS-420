@@ -135,28 +135,42 @@ webfont.
   unicode-as-icon-system. The one deliberate exception is the starting-
   position board plate itself, which sets real chess-piece Unicode glyphs
   (♔♕♖♗♘♙ / ♚♛♜♝♞♟) as literal chess notation content, not as UI icons.
-- **`ChessboardPlate`**: authored inline SVG rendering the accurate standard
-  starting position (verified piece placement), framed with a green hairline
-  and a soft offset+blur glow (`glow-brass`). Squares are a classic
-  tournament-set pairing (`--board-light` bright ivory / `--board-dark` a
-  deep shade of the primary green) rather than blending into the page's own
-  dark ground — the earlier version used `--muted`/`--card` for the squares,
-  which read as low-contrast and made the board hard to tell apart from its
-  own container. Pieces carry a stroke outline (`paintOrder: "stroke fill"`)
-  so they stay legible regardless of which square color sits under them:
-  white pieces are board-light fill with a board-dark outline, black pieces
-  are gold fill with a foreground (bone) outline — every piece color is
-  drawn from the same green/gold/ivory palette as the rest of the page, not
-  a separate one-off "chess colors" choice. Coordinate labels read in the
-  primary green rather than muted gray, for the same reason. Deliberately
-  static/accurate
-  rather than a synced move-by-move animation — the interpreter's
-  `BoardState` is a semantic state machine (mode/variables/rook-bits), not a
-  spatial board, and the README documents that larger programs diverge from
-  legal chess after a few plies. Animating piece positions the runtime
-  doesn't actually track would misrepresent the language. A real synced
-  board is a legitimate future feature but needs a position/legality tracker
-  added to the runtime first — noted as a follow-up, not faked here.
+- **`Chessboard`** (`components/chessboard.tsx`, rules in `lib/chess.ts`): a
+  **playable** board in the hero — click a piece, click a destination. Full
+  standard rules: per-piece movement, blocked paths, captures, alternating
+  turns, castling (both sides, including the "can't castle through check"
+  rule), en passant, pawn double-step, promotion, check, checkmate, and
+  stalemate. Illegal moves are never offered rather than rejected after the
+  fact: selecting a piece shows only its legal destinations (a dot on empty
+  squares, a ring around capturable pieces), and moves that would leave your
+  own king in check are filtered out by playing each candidate onto a cloned
+  board and testing the king. State is `useState` only — the game resets on
+  refresh, by design; there is no persistence, no engine opponent, no clock,
+  no captured-piece tray, no move list.
+  - Promotion is **auto-queen**; under-promotion is not offered. A deliberate
+    simplification for a board of this scope, not an oversight.
+  - Rendered as 64 `<button>` elements in a CSS grid rather than the previous
+    inline SVG, so squares are focusable, keyboard-operable, and carry real
+    labels (`"e4, white pawn, capture available"`); the status line is an
+    `aria-live` region.
+  - Squares keep the tournament-set pairing (`--board-light` bright ivory /
+    `--board-dark` a deep shade of the primary green). Pieces use one filled
+    glyph set for both sides, told apart by fill and given a thin
+    `-webkit-text-stroke` (`.piece-white` / `.piece-black` in `globals.css`)
+    so they stay legible on either square color. Every piece color still
+    comes from the page's green/gold/ivory palette.
+  - Piece size scales with the board via container-query units (`text-[8cqw]`
+    inside an `@container` grid), so one rule covers every viewport.
+  - On phones the card takes a negative horizontal margin and tighter padding
+    to buy back width — squares land at ~40px instead of ~35px. Below `sm`
+    only; the desktop composition is untouched.
+  - **It does not drive the interpreter, and the caption says so.** The
+    interpreter's `BoardState` is a semantic state machine
+    (mode/variables/rook-bits), not a spatial board, and the README documents
+    that larger programs stop being legal chess after a few plies — so wiring
+    this board's moves into the runner would misrepresent the language. The
+    two systems are intentionally separate: `lib/chess.ts` validates ordinary
+    chess, the interpreter in `app/page.tsx` ignores legality entirely.
 - **`SiteNav`**: sticky, hairline-bottomed, `$ lonely-chess` wordmark set in
   Teko (signage role) with a blinking text cursor, anchor links in RX100
   mono styled as shell subcommands (`run`, `syntax`, `examples`).
