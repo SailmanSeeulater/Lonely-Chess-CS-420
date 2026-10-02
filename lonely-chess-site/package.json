@@ -11,9 +11,6 @@
     "sync-examples": "node scripts/sync-examples.mjs",
     "deploy": "npm run build && gh-pages -d out --dotfiles"
   },
-  "engines": {
-    "node": ">=22.18"
-  },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

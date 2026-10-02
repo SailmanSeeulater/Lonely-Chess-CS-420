@@ -21,6 +21,12 @@ const FILES = [
 
 const missing = FILES.filter((name) => !fs.existsSync(path.join(repoRoot, name)));
 if (missing.length) {
+  // Builds that copy only lonely-chess-site/ (e.g. the VPS Docker image) can't see the repo root;
+  // the committed lib/examples.ts is then the source, regenerated on any full checkout.
+  if (fs.existsSync(outFile)) {
+    console.log("sync-examples: repo .pgn files not found; keeping the committed lib/examples.ts");
+    process.exit(0);
+  }
   console.error(`sync-examples: missing in ${repoRoot}: ${missing.join(", ")}`);
   process.exit(1);
 }
