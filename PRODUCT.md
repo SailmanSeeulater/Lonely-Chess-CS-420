@@ -38,13 +38,17 @@ which is itself part of the honest story, not something to hide.
 ## Operating Context
 
 - The in-browser runner re-implements the same parsing/interpretation rules
-  as the Python reference implementation (`lonely_chess_runtime.py` /
-  `lonely_chess_interpreter.py`) in TypeScript, client-side, no backend.
+  as the Python reference implementation (`lonely_chess_runtime.py`) in
+  TypeScript, client-side, no backend. Parity is enforced by `npm test`
+  (`lonely-chess-site/tests/parity.test.mjs`), which runs every sample and
+  every `test_lonely_chess.py` case through both. The Python file stays the
+  source of truth: change it first, then port.
 - Visitors paste or load a `.pgn` file's text, run it, and read printed output
   plus end-state variables — this is the load-bearing interactive feature of
   the page, not a decorative demo.
 - Deployed as a static export to GitHub Pages (`npm run deploy` →
-  `next build && gh-pages -d out`).
+  `npm run build && gh-pages -d out`; the build regenerates the site's
+  copy of the sample programs from the repo's `.pgn` files first).
 - The full language reference (piece-role table, binary encoding, loop/if/
   arithmetic mechanics) already exists as prose in the repo README and is
   real, non-negotiable technical content — not something to summarize away
@@ -61,9 +65,15 @@ which is itself part of the honest story, not something to hide.
   (`sample_int100.pgn`, `sample_str_hello.pgn`, `sample_arithmetic.pgn`,
   `fizzbuzz_100.pgn`, `actual_game_sample.pgn`, etc.) — evidence on hand, see
   below.
-- Undecided: whether the site should surface a legality-checked chessboard
-  visualization of the running program (raised as a possible follow-up
-  feature, not committed).
+- The site also closes the loop in the other direction: a playable,
+  rules-checked board whose games can be run as programs, and a compiler
+  that turns an integer or short ASCII message into a program that prints it
+  *and* is legal chess move-for-move. Neither changes the language — they
+  only produce PGN the existing interpreter reads.
+- Still not built: animating an *arbitrary* program's execution on the board.
+  The interpreter is a semantic state machine that ignores legality, and most
+  hand-written programs stop being legal chess after a few plies, so a board
+  can only honestly play the legal ones.
 
 ## Brand Commitments
 

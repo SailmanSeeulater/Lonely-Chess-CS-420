@@ -3,11 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run sync-examples && next dev",
+    "build": "npm run sync-examples && next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "next build && gh-pages -d out --dotfiles"
+    "test": "node --no-warnings tests/engine.test.mjs && node --no-warnings tests/parity.test.mjs && node --no-warnings tests/compiler.test.mjs",
+    "sync-examples": "node scripts/sync-examples.mjs",
+    "deploy": "npm run build && gh-pages -d out --dotfiles"
+  },
+  "engines": {
+    "node": ">=22.18"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

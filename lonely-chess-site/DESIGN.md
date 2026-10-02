@@ -146,7 +146,25 @@ webfont.
   own king in check are filtered out by playing each candidate onto a cloned
   board and testing the king. State is `useState` only — the game resets on
   refresh, by design; there is no persistence, no engine opponent, no clock,
-  no captured-piece tray, no move list.
+  no captured-piece tray. Move generation is verified by perft against
+  published reference counts (`tests/engine.test.mjs`).
+  - Pieces live in an overlay layer keyed by a stable piece `id` and placed
+    with `transform: translate()`, so a move **glides** (300ms, exponential
+    ease-out) instead of teleporting; undo and reset glide back. Rendered in
+    id order so React never reorders DOM nodes mid-transition. Squares stay
+    the click targets underneath (`pointer-events: none` on the overlay).
+  - Undo, reset, and the game's own movetext (SAN, scrolls as it grows) sit
+    under the board. SAN uses full-square disambiguation (`Nb1d2`) because
+    that is the only disambiguated form the Lonely Chess tokenizer reads.
+  - **"run this game as a program"** sends the movetext to the runner — the
+    site's thesis made literal: every game is a program, usually one that
+    computes nothing, and the runner says so plainly.
+  - **"watch a real game print 100"** autoplays `actual_game_sample.pgn` (a
+    fully legal game) on the board; the compiler's "Watch it on the board"
+    uses the same autoplay through an imperative `ChessboardHandle.play()`.
+    Pacing is ~14s per game, clamped to 60–420ms per ply so long compiled
+    programs speed up rather than drag. Reduced motion jumps straight to the
+    final position.
   - Promotion is **auto-queen**; under-promotion is not offered. A deliberate
     simplification for a board of this scope, not an oversight.
   - Rendered as 64 `<button>` elements in a CSS grid rather than the previous
@@ -164,16 +182,27 @@ webfont.
   - On phones the card takes a negative horizontal margin and tighter padding
     to buy back width — squares land at ~40px instead of ~35px. Below `sm`
     only; the desktop composition is untouched.
-  - **It does not drive the interpreter, and the caption says so.** The
-    interpreter's `BoardState` is a semantic state machine
-    (mode/variables/rook-bits), not a spatial board, and the README documents
-    that larger programs stop being legal chess after a few plies — so wiring
-    this board's moves into the runner would misrepresent the language. The
-    two systems are intentionally separate: `lib/chess.ts` validates ordinary
-    chess, the interpreter in `app/page.tsx` ignores legality entirely.
+  - The board feeds the interpreter one way, on an explicit click; it never
+    claims the interpreter animates pieces. The interpreter
+    (`lib/interpreter.ts`) still ignores legality — most sample programs stop
+    being legal chess after a few plies — so the board never tries to *show*
+    an arbitrary program's execution, only to play legal ones.
+- **`CompilerPanel`** (`components/compiler-panel.tsx`, `lib/compiler.ts`):
+  turns an integer (−127…127) or up to 40 printable-ASCII characters into a
+  Lonely Chess program that prints it. Generalizes `actual_game_sample.pgn`:
+  the d-pawn names the variable (`p_d2`) so `Qd2`/`Qd1` are legal once it
+  has advanced, and knight parity is arranged so `Nb1` is always a legal
+  commit. A live readout replays the output through `lib/chess.ts` and shows
+  "✓ every move is a legal chess move" — per-move legality; draw rules
+  (repetition, 75-move) are not modeled, so the claim is worded about moves,
+  not about a completed game. Verified for every integer and 200+ random
+  strings in both interpreters (`tests/compiler.test.mjs`).
+- **`CodeBlock`** (`components/code-block.tsx`): the dark terminal panel,
+  shared by the examples, the compiler output, and "run it locally".
 - **`SiteNav`**: sticky, hairline-bottomed, `$ lonely-chess` wordmark set in
   Teko (signage role) with a blinking text cursor, anchor links in RX100
-  mono styled as shell subcommands (`run`, `syntax`, `examples`).
+  mono styled as shell subcommands (`run`, `compile`, `syntax`, `examples`;
+  `syntax` hides below `sm` so the row fits a 375px phone).
 - **Browser-surface theming**: `::selection`, scrollbar thumb/track, and
   focus rings are all themed from the primary green in `globals.css` rather
   than left as browser defaults.
@@ -190,6 +219,8 @@ effects:
   right on a seamless 10s loop (sped up from an initial 40s at the user's
   request) (`background-position` shifted by exactly one
   tile period so it never jumps). Disabled under `prefers-reduced-motion`.
+- Chess pieces glide between squares (300ms, `cubic-bezier(0.16,1,0.3,1)`),
+  both for clicked moves and autoplay. Off under reduced motion.
 
 ## Navigation
 
@@ -216,14 +247,27 @@ effects:
 The runner starts empty (no output, no variables) until the visitor presses
 **Run program** — loading a sample fills the input but does not run it. The
 visitor's own click is what proves the demo is live, not a pre-computed
-result waiting on page load.
+result waiting on page load. "Run this game as a program" and the
+compiler's "Run it" are the same contract: an explicit click that loads the
+program, runs it, and scrolls to the output. A small label above the input
+names where the current program came from (a sample, a compile, the board,
+or "your edits").
+
+## Code layout
+
+- `lib/interpreter.ts` — the browser runtime, a faithful port of
+  `lonely_chess_runtime.py`. Before this split the in-page runtime failed 6
+  of the 20 reference cases (annotated PGNs printed nothing, checkmate didn't
+  halt, negative ints came out positive, division by zero returned 0).
+  `tests/parity.test.mjs` runs every sample and every `test_lonely_chess.py`
+  case through both implementations and requires identical output.
+- `lib/examples.ts` — **generated** by `scripts/sync-examples.mjs` from the
+  repository's `.pgn` files on every `dev`/`build`; the hand-pasted copy it
+  replaced had already drifted (its FizzBuzz no longer matched the file).
+- `npm test` runs engine, parity, and compiler suites (Node ≥22.18 for
+  type stripping; Python on PATH, or set `PYTHON`).
 
 ## Known, deliberate deferrals
-
-- PGN parser/interpreter (`app/page.tsx` lines ~1–394) was left untouched
-  and unsplit from the page component — a real maintainability issue, but
-  orthogonal to this visual redesign; flagged, not fixed, per "never repair
-  drift as a side effect of a design task."
 - No comp-led round: the installed `impeccable` CLI (v4.0.0) does not expose
   `concept-seed` / `serve-question` / `build-phase` / `comp-spec` (only
   `detect`, `install`, `link`, `update`, `check`, `help`), and the direction

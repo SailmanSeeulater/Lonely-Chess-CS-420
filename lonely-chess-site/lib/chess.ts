@@ -7,7 +7,9 @@
 
 export type Color = "w" | "b";
 export type PieceType = "k" | "q" | "r" | "b" | "n" | "p";
-export type Piece = { type: PieceType; color: Color };
+/* `id` is stable across moves (a promoted pawn keeps it), so the board can
+   animate a piece from one square to the next instead of re-rendering it. */
+export type Piece = { type: PieceType; color: Color; id: number };
 export type Square = { r: number; f: number };
 export type Board = (Piece | null)[][];
 
@@ -66,10 +68,10 @@ export const squareName = ({ r, f }: Square) => `${"abcdefgh"[f]}${8 - r}`;
 export function initialGame(): GameState {
   const board: Board = Array.from({ length: 8 }, () => Array<Piece | null>(8).fill(null));
   for (let f = 0; f < 8; f++) {
-    board[0][f] = { type: BACK_RANK[f], color: "b" };
-    board[1][f] = { type: "p", color: "b" };
-    board[6][f] = { type: "p", color: "w" };
-    board[7][f] = { type: BACK_RANK[f], color: "w" };
+    board[0][f] = { type: BACK_RANK[f], color: "b", id: f };
+    board[1][f] = { type: "p", color: "b", id: 8 + f };
+    board[6][f] = { type: "p", color: "w", id: 16 + f };
+    board[7][f] = { type: BACK_RANK[f], color: "w", id: 24 + f };
   }
   return {
     board,
@@ -254,7 +256,7 @@ export function applyMove(state: GameState, move: Move): GameState {
 
   const captured = board[move.to.r][move.to.f];
   board[move.to.r][move.to.f] = move.promotion
-    ? { type: move.promotion, color: piece.color }
+    ? { type: move.promotion, color: piece.color, id: piece.id }
     : piece;
 
   if (move.castle) {
@@ -336,4 +338,104 @@ export function status(state: GameState): Status {
     return { kind: check ? "checkmate" : "stalemate", turn: state.turn };
   }
   return { kind: check ? "check" : "playing", turn: state.turn };
+}
+
+export function allLegalMoves(state: GameState): Move[] {
+  const moves: Move[] = [];
+  for (let r = 0; r < 8; r++) {
+    for (let f = 0; f < 8; f++) {
+      const piece = state.board[r][f];
+      if (piece && piece.color === state.turn) moves.push(...legalMoves(state, { r, f }));
+    }
+  }
+  return moves;
+}
+
+/*
+  SAN without the check suffix. When two same-type pieces can reach the
+  destination, the full origin square is written ("Nb1d2", not "Nbd2"): the
+  Lonely Chess tokenizer only recognizes full-square disambiguation, and
+  every PGN reader accepts it.
+*/
+function sanForms(state: GameState, move: Move): { full: string; standard: string } {
+  if (move.castle) {
+    const san = move.castle === "k" ? "O-O" : "O-O-O";
+    return { full: san, standard: san };
+  }
+  const piece = state.board[move.from.r][move.from.f];
+  if (!piece) return { full: "", standard: "" };
+  const dest = squareName(move.to);
+
+  if (piece.type === "p") {
+    const base = move.capture ? `${"abcdefgh"[move.from.f]}x${dest}` : dest;
+    const san = move.promotion ? `${base}=${move.promotion.toUpperCase()}` : base;
+    return { full: san, standard: san };
+  }
+
+  const rivals: Square[] = [];
+  for (let r = 0; r < 8; r++) {
+    for (let f = 0; f < 8; f++) {
+      const other = state.board[r][f];
+      if (!other || other.color !== piece.color || other.type !== piece.type) continue;
+      if (r === move.from.r && f === move.from.f) continue;
+      if (legalMoves(state, { r, f }).some((m) => sameSquare(m.to, move.to))) rivals.push({ r, f });
+    }
+  }
+
+  const letter = piece.type.toUpperCase();
+  const capture = move.capture ? "x" : "";
+  if (rivals.length === 0) {
+    const san = `${letter}${capture}${dest}`;
+    return { full: san, standard: san };
+  }
+
+  const from = squareName(move.from);
+  const minimal = !rivals.some((s) => s.f === move.from.f)
+    ? from[0]
+    : !rivals.some((s) => s.r === move.from.r)
+      ? from[1]
+      : from;
+  return { full: `${letter}${from}${capture}${dest}`, standard: `${letter}${minimal}${capture}${dest}` };
+}
+
+export function toSan(state: GameState, move: Move): string {
+  const after = status(applyMove(state, move));
+  const suffix = after.kind === "checkmate" ? "#" : after.kind === "check" ? "+" : "";
+  return sanForms(state, move).full + suffix;
+}
+
+const normalizeSan = (san: string) => san.trim().replace(/0-0-0/g, "O-O-O").replace(/0-0/g, "O-O").replace(/[+#!?]+$/, "");
+
+/* The legal move a SAN token names in this position, or null if it names none. */
+export function findMoveBySan(state: GameState, san: string): Move | null {
+  const wanted = normalizeSan(san);
+  return (
+    allLegalMoves(state).find((move) => {
+      const forms = sanForms(state, move);
+      return forms.full === wanted || forms.standard === wanted;
+    }) ?? null
+  );
+}
+
+export type Replay = { states: GameState[]; sans: string[]; illegalAt: number | null };
+
+/* Plays SAN tokens from the starting position, stopping at the first one that is not a legal move. */
+export function replaySan(tokens: string[]): Replay {
+  const states = [initialGame()];
+  const sans: string[] = [];
+  for (let i = 0; i < tokens.length; i++) {
+    const state = states[states.length - 1];
+    const move = findMoveBySan(state, tokens[i]);
+    if (!move) return { states, sans, illegalAt: i };
+    sans.push(toSan(state, move));
+    states.push(applyMove(state, move));
+  }
+  return { states, sans, illegalAt: null };
+}
+
+/* Standard movetext ("1. e4 e5 2. Nf3") for SAN moves played from the start. */
+export function movetext(sans: string[]): string {
+  const parts: string[] = [];
+  sans.forEach((san, i) => parts.push(i % 2 === 0 ? `${i / 2 + 1}. ${san}` : san));
+  return parts.join(" ");
 }
